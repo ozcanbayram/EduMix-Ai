@@ -1,9 +1,11 @@
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 ThemeData lightTheme = ThemeData.light().copyWith(
   //APPBAR THEME
   appBarTheme: AppBarTheme(
+    systemOverlayStyle: SystemUiOverlayStyle.dark,
     backgroundColor: ColorItems.project_scaffold_color,
     toolbarHeight: ThemeSizes().toolBarHeight,
     centerTitle: true,

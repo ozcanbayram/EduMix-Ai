@@ -1,5 +1,5 @@
 import 'package:edumix/theme/light_theme.dart';
-import 'package:edumix/view/feed_screen.dart';
+import 'package:edumix/feature/home/home_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
