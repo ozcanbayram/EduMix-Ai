@@ -1,3 +1,4 @@
+// import 'package:edumix/product/constant/image_enum.dart';
 import 'package:flutter/material.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -10,6 +11,12 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return const Scaffold(
+      body: Column(
+        children: [
+          // ImageEnums.learning_first.toImage,
+        ],
+      ),
+    );
   }
 }
