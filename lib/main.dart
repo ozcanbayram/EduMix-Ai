@@ -1,5 +1,5 @@
+import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/theme/light_theme.dart';
-import 'package:edumix/feature/home/home_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       theme: lightTheme,
-      home: const FeedScreen(),
+      home: const WelcomePage(),
     );
   }
 }

@@ -1,5 +1,0 @@
-
-
-enum WidgetSizes{
-  image
-}
