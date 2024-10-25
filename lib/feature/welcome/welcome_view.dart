@@ -1,6 +1,7 @@
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/enums/image_enum.dart';
+import 'package:edumix/product/widgets/auth_text_button.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:flutter/material.dart';
 
@@ -51,11 +52,12 @@ class _WelcomePageState extends State<WelcomePage>
             ),
             const Spacer(),
             ButtonLarge(
+              buttonsText: ProjectText.registerButton,
               onPressed: () {},
             ),
-            TextButton(
+            AuthTextButton(
+              text: ProjectText.haveAccountLogin,
               onPressed: () {},
-              child: const Text(ProjectText.haveAccountLogin),
             ),
           ],
         ),
