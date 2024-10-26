@@ -15,7 +15,7 @@ class WelcomeCard extends StatelessWidget {
         model.image,
         Text(
           textAlign: TextAlign.center,
-          model.description + model.index.toString(),
+          model.description ,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 color: ColorItems.project_text_color,
                 fontWeight: FontWeight.bold,
