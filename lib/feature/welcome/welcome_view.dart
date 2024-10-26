@@ -57,9 +57,9 @@ class _WelcomePageState extends State<WelcomePage>
       body: Padding(
         padding: const PagePadding.all(),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
+              flex: 3,
               child: PageViewWelcome(
                 pageController: _pageController,
                 onPageChanged: (index) => _tabController.animateTo(index),

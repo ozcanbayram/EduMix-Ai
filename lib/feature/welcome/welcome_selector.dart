@@ -16,8 +16,10 @@ class WelcomeSelector extends StatelessWidget {
       padding: context.padding.normal,
       child: TabPageSelector(
         controller: _tabController,
-        color: ColorItems.project_white,
+        color: ColorItems.project_blue,
         selectedColor: ColorItems.project_orange,
+        indicatorSize: 15,
+        borderStyle: BorderStyle.none,
       ),
     );
   }

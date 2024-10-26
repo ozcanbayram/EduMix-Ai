@@ -7,13 +7,13 @@ class ProjectText {
   static const String appName = 'EduMix';
 
   static const String firstWelcomeText =
-      'Yapay zeka taradınfan oluşturulan sayısız bilgi EduMix’te.';
+      'Yapay zeka taradınfan oluşturulan \nsayısız bilgi EduMix’te.';
 
   static const String secondWelcomeText =
-      'EduMix ile bir çok kategoride \n hızlıca bilgi edinebilirsin.';
+      'EduMix ile bir çok kategoride \nhızlıca bilgi edinebilirsin.';
 
   static const String thirdWelcomeText =
-      'Bilgi her zaman vardır \n sadece onu bulmanı bekler. ';
+      'Bilgi her zaman vardır \nsadece onu bulmanı bekler. ';
 
   static const String haveAccountLogin = 'Zaten bir hesabın var mı? Giriş Yap';
 
