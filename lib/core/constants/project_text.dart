@@ -7,7 +7,7 @@ class ProjectText {
   static const String appName = 'EduMix';
 
   static const String firstWelcomeText =
-      'Yapay zeka taradınfan oluşturulan sayısız \nbilgi EduMix’te.';
+      'Yapay zeka taradınfan oluşturulan sayısız bilgi EduMix’te.';
 
   static const String secondWelcomeText =
       'EduMix ile bir çok kategoride \n hızlıca bilgi edinebilirsin.';

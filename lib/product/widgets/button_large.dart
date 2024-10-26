@@ -17,8 +17,7 @@ class ButtonLarge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          context.padding.verticalNormal + context.padding.horizontalMedium,
+      padding: context.padding.verticalLow + context.padding.horizontalMedium,
       child: SizedBox(
         height: WidgetSizes.buttonLargeHeight,
         width: double.infinity,
