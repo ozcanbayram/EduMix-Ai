@@ -1,4 +1,5 @@
 import 'package:edumix/core/constants/color_items.dart';
+import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
@@ -18,7 +19,7 @@ class WelcomeSelector extends StatelessWidget {
         controller: _tabController,
         color: ColorItems.project_blue,
         selectedColor: ColorItems.project_orange,
-        indicatorSize: 15,
+        indicatorSize: WidgetSizes.indicatorSize,
         borderStyle: BorderStyle.none,
       ),
     );
