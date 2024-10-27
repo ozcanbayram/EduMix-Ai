@@ -1,5 +1,6 @@
 import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/product/initialize/application_start.dart';
+import 'package:edumix/product/widgets/auth_wrapper.dart';
 import 'package:edumix/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       theme: lightTheme,
-      home: const WelcomePage(),
+      home: AuthWrapper(),
       // home: const ProviderScope(child: RegisterView()),
     );
   }
