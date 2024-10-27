@@ -1,7 +1,8 @@
-import 'package:edumix/feature/welcome/welcome_view.dart';
+import 'package:edumix/feature/register/register_view.dart';
 import 'package:edumix/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent, // Durum çubuğu 
+        statusBarColor: Colors.transparent, // Durum çubuğu
         statusBarIconBrightness: Brightness.dark, // Simge rengi
       ),
     );
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       theme: lightTheme,
-      home: const WelcomePage(),
+      home: const ProviderScope(child: RegisterView()),
     );
   }
 }
