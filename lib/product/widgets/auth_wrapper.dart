@@ -1,7 +1,7 @@
 import 'package:edumix/feature/home/home_view.dart';
 import 'package:edumix/feature/welcome/welcome_view.dart';
-import 'package:flutter/material.dart';
 import 'package:edumix/product/services/auth_service.dart'; // AuthService sınıfını içe aktarın
+import 'package:flutter/material.dart';
 
 class AuthWrapper extends StatelessWidget {
   AuthWrapper({super.key});

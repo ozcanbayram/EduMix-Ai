@@ -1,4 +1,7 @@
 import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/feature/welcome/welcome_view.dart';
+import 'package:edumix/product/services/auth_service.dart';
+import 'package:edumix/product/widgets/button_large.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -9,6 +12,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final AuthService _authService = AuthService(); // AuthService örneği
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +23,22 @@ class _HomeViewState extends State<HomeView> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: const Column(),
+      body: Center(
+        child: ButtonLarge(
+          onPressed: _signOut, // Çıkış fonksiyonunu bağlayın
+          buttonsText: 'Çık',
+        ),
+      ),
+    );
+  }
+
+  Future<void> _signOut() async {
+    await _authService.signOut(); // Çıkış işlemi
+
+    // Çıkış sonrası giriş sayfasına yönlendirme
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const WelcomePage()),
     );
   }
 }
