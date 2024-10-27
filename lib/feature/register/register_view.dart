@@ -19,8 +19,24 @@ class RegisterView extends StatefulWidget {
 class _RegisterViewState extends State<RegisterView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwordAgainController = TextEditingController();
   final _nameController = TextEditingController();
   final RegisterModel _registerModel = RegisterModel();
+
+  bool passwordVisibility = false;
+  bool passwordAgainVisibility = false;
+
+  void _changePasswordVisibility() {
+    setState(() {
+      passwordVisibility = !passwordVisibility;
+    });
+  }
+
+  void _changePassworAgaindVisibility() {
+    setState(() {
+      passwordAgainVisibility = !passwordAgainVisibility;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,24 +57,42 @@ class _RegisterViewState extends State<RegisterView> {
                     prefixIcon: const Icon(Icons.person),
                     textInputAction: TextInputAction.next,
                     labelText: 'Ad Soyad',
+                    keyboardType: TextInputType.text,
                   ),
                   CustomTextField(
                     nameController: _emailController,
                     prefixIcon: const Icon(Icons.email),
                     textInputAction: TextInputAction.next,
                     labelText: 'E posta',
+                    keyboardType: TextInputType.emailAddress,
                   ),
                   CustomTextField(
                     nameController: _passwordController,
+                    obscureText: passwordVisibility,
+                    suffixIcon: IconButton(
+                      onPressed: _changePasswordVisibility,
+                      icon: passwordVisibility
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off),
+                    ),
                     prefixIcon: const Icon(Icons.lock),
-                    textInputAction: TextInputAction.done,
+                    textInputAction: TextInputAction.next,
                     labelText: 'Parola',
+                    keyboardType: TextInputType.text,
                   ),
                   CustomTextField(
-                    nameController: _passwordController,
+                    nameController: _passwordAgainController,
+                    obscureText: passwordAgainVisibility,
+                    suffixIcon: IconButton(
+                      onPressed: _changePassworAgaindVisibility,
+                      icon: passwordAgainVisibility
+                          ? const Icon(Icons.visibility)
+                          : const Icon(Icons.visibility_off),
+                    ),
                     prefixIcon: const Icon(Icons.lock),
                     textInputAction: TextInputAction.done,
                     labelText: 'Parola Tekrar',
+                    keyboardType: TextInputType.text,
                   ),
                 ],
               ),
@@ -67,7 +101,14 @@ class _RegisterViewState extends State<RegisterView> {
                 buttonsText: ProjectText.registerButton,
               ),
               AuthTextButton(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Bu bir test mesajıdır.'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                },
                 text: ProjectText.haveAccountLogin,
               ),
             ],
@@ -77,28 +118,44 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  //Auth metodu:
-
+  //Auth kayit metodu:
   Future<void> _register() async {
     final email = _emailController.text;
     final password = _passwordController.text;
+    final passwordAgain = _passwordAgainController.text;
     final displayName = _nameController.text;
 
-    final user = await _registerModel.register(
-      email,
-      password,
-      displayName,
-    ); // Model üzerinden kayıt islemi
+    if (email.isEmpty || displayName.isEmpty) {
+      _showSnackBar('E-posta ve ad soyad boş olamaz.');
+      return;
+    }
+    if (password != passwordAgain) {
+      _showSnackBar('Parolalar aynı değil.');
+      return;
+    }
+
+    final user = await _registerModel.register(email, password, displayName);
+
     if (user != null) {
-      // Kayıt basarili
+      // Kayıt başarılı
+      _showSnackBar('Kayıt başarılı!');
       await Navigator.pushReplacement(
         context,
         // ignore: inference_failure_on_instance_creation
         MaterialPageRoute(builder: (context) => const WelcomePage()),
       );
     } else {
-      // Hata
-      print('Kullanıcı kaydedilemedi.');
+      // Kayıt hatası
+      _showSnackBar('Kullanıcı kaydedilemedi.');
     }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 }

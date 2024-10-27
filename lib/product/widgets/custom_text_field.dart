@@ -8,13 +8,19 @@ class CustomTextField extends StatelessWidget {
     required this.prefixIcon,
     required this.textInputAction,
     required this.labelText,
+    required this.keyboardType,
+    this.obscureText = false, // İsteğe bağlı olarak ekleyin
     super.key,
+    this.suffixIcon,
   }) : _nameController = nameController;
 
   final TextEditingController _nameController;
   final Icon prefixIcon;
+  final IconButton? suffixIcon;
   final TextInputAction textInputAction;
   final String labelText;
+  final bool obscureText; // Yeni parametre
+  final TextInputType keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -25,25 +31,21 @@ class CustomTextField extends StatelessWidget {
           color: ColorItems.project_second_text_color,
           fontWeight: FontWeight.w500,
         ),
-        //* bir sonraki field'a geçmek için ya da tamamlamak için:
         textInputAction: textInputAction,
-        //* number, phone ... gibi input ayarları yapılabilir.
-        keyboardType: TextInputType.text,
-        //* otomotik tamamlama özelliği
-        // autofillHints: const [AutofillHints.email],
-
+        keyboardType: keyboardType,
         controller: _nameController,
         cursorColor: ColorItems.project_blue,
+        obscureText: obscureText, // Burada kullanın
         decoration: InputDecoration(
+          suffixIcon: suffixIcon,
           prefixIcon: prefixIcon,
           filled: true,
           fillColor: ColorItems.project_white,
-
           labelText: labelText,
           labelStyle: const TextStyle(
             color: ColorItems.project_text_color,
             fontWeight: FontWeight.w500,
-          ), // labelText rengi
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: const BorderSide(
