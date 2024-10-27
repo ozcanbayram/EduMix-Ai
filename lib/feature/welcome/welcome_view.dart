@@ -1,4 +1,5 @@
 import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/feature/login/login_view.dart';
 import 'package:edumix/feature/register/register_view.dart';
 import 'package:edumix/feature/welcome/page_view_welcome.dart';
 import 'package:edumix/feature/welcome/welcome_model.dart';
@@ -99,7 +100,14 @@ class _WelcomePageState extends State<WelcomePage>
             ),
             AuthTextButton(
               text: ProjectText.haveAccountLogin,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  // ignore: inference_failure_on_instance_creation
+                  MaterialPageRoute(builder: (context) => const LoginView()),
+                );
+              },
             ),
           ],
         ),

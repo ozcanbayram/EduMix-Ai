@@ -18,4 +18,6 @@ class ProjectText {
   static const String haveAccountLogin = 'Zaten bir hesabın var mı? Giriş Yap';
 
   static const String registerButton = 'Kayıt Ol';
+  static const String loginButton = 'Giriş Yap';
+  static const String forgotPassword = 'Parolamı Unuttum';
 }

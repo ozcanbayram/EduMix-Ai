@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 // ignore: constant_identifier_names
-enum ImageEnums { learning_first, learning_second, learning_third ,logo}
+enum ImageEnums {
+  learning_first,
+  learning_second,
+  learning_third,
+  logo,
+  forgot
+}
 
 extension ImageEnumExtension on ImageEnums {
   String get _toPath => 'asset/images/ic_$name.png';

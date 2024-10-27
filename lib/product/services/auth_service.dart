@@ -5,6 +5,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+//kayit:
   Future<User?> registerWithEmailAndPassword(
     String email,
     String password,
@@ -35,7 +36,56 @@ class AuthService {
       return userCredential.user; // Başarılı ise kullanıcıyı döndür
     } catch (e) {
       print(e);
-      return null; // Hata durumunda null 
+      return null; // Hata durumunda null
     }
+  }
+
+  //Giriş:
+  Future<User?> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      // Hata yönetimi
+      switch (e.code) {
+        case 'user-not-found':
+          print('Kullanıcı bulunamadı.');
+        case 'wrong-password':
+          print('Yanlış parola.');
+        default:
+          print('Bir hata oluştu: ${e.message}');
+      }
+      return null;
+    } catch (e) {
+      print('Beklenmedik bir hata oluştu: $e');
+      return null;
+    }
+  }
+
+  //forgot password:
+  Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      print('Parola sıfırlama e-postası gönderildi.');
+    } on FirebaseAuthException catch (e) {
+      // Hata yönetimi
+      print('Hata: ${e.message}');
+    }
+  }
+
+  //kullanici durumu:
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
+
+//cikis islemi:
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

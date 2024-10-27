@@ -1,42 +1,31 @@
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/feature/home/home_view.dart';
-import 'package:edumix/feature/login/login_view.dart';
-import 'package:edumix/feature/register/register_model.dart'; // Yeni model dosyasını içe aktar
-import 'package:edumix/feature/welcome/welcome_view.dart';
+import 'package:edumix/feature/login/login_model.dart';
 import 'package:edumix/product/widgets/auth_text_button.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/custom_text_field.dart';
+import 'package:edumix/product/widgets/forgot_password.dart';
 import 'package:edumix/product/widgets/logo_widget.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
 
-class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _RegisterViewState createState() => _RegisterViewState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _LoginViewState extends State<LoginView> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _passwordAgainController = TextEditingController();
-  final _nameController = TextEditingController();
-  final RegisterModel _registerModel = RegisterModel();
+  final LoginModel _loginModel = LoginModel();
 
   bool passwordVisibility = false;
-  bool passwordAgainVisibility = false;
 
   void _changePasswordVisibility() {
     setState(() {
       passwordVisibility = !passwordVisibility;
-    });
-  }
-
-  void _changePassworAgaindVisibility() {
-    setState(() {
-      passwordAgainVisibility = !passwordAgainVisibility;
     });
   }
 
@@ -55,17 +44,10 @@ class _RegisterViewState extends State<RegisterView> {
               Column(
                 children: [
                   CustomTextField(
-                    nameController: _nameController,
-                    prefixIcon: const Icon(Icons.person),
-                    textInputAction: TextInputAction.next,
-                    labelText: 'Ad Soyad',
-                    keyboardType: TextInputType.text,
-                  ),
-                  CustomTextField(
                     nameController: _emailController,
                     prefixIcon: const Icon(Icons.email),
                     textInputAction: TextInputAction.next,
-                    labelText: 'E posta',
+                    labelText: 'E-posta',
                     keyboardType: TextInputType.emailAddress,
                   ),
                   CustomTextField(
@@ -78,29 +60,15 @@ class _RegisterViewState extends State<RegisterView> {
                           : const Icon(Icons.visibility_off),
                     ),
                     prefixIcon: const Icon(Icons.lock),
-                    textInputAction: TextInputAction.next,
-                    labelText: 'Parola',
-                    keyboardType: TextInputType.text,
-                  ),
-                  CustomTextField(
-                    nameController: _passwordAgainController,
-                    obscureText: passwordAgainVisibility,
-                    suffixIcon: IconButton(
-                      onPressed: _changePassworAgaindVisibility,
-                      icon: passwordAgainVisibility
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off),
-                    ),
-                    prefixIcon: const Icon(Icons.lock),
                     textInputAction: TextInputAction.done,
-                    labelText: 'Parola Tekrar',
+                    labelText: 'Parola',
                     keyboardType: TextInputType.text,
                   ),
                 ],
               ),
               ButtonLarge(
-                onPressed: _register,
-                buttonsText: ProjectText.registerButton,
+                onPressed: _login,
+                buttonsText: ProjectText.loginButton,
               ),
               AuthTextButton(
                 onPressed: () {
@@ -108,10 +76,12 @@ class _RegisterViewState extends State<RegisterView> {
                     // ignore: use_build_context_synchronously
                     context,
                     // ignore: inference_failure_on_instance_creation
-                    MaterialPageRoute(builder: (context) => const LoginView()),
+                    MaterialPageRoute(
+                      builder: (context) => const ForgotPasswordScreen(),
+                    ),
                   );
                 },
-                text: ProjectText.haveAccountLogin,
+                text: ProjectText.forgotPassword,
               ),
             ],
           ),
@@ -120,36 +90,24 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  //Auth kayit metodu:
-  Future<void> _register() async {
-    final email = _emailController.text;
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
     final password = _passwordController.text;
-    final passwordAgain = _passwordAgainController.text;
-    final displayName = _nameController.text;
 
-    if (email.isEmpty || displayName.isEmpty) {
-      _showSnackBar('E-posta ve ad soyad boş olamaz.');
-      return;
-    }
-    if (password != passwordAgain) {
-      _showSnackBar('Parolalar aynı değil.');
+    if (email.isEmpty || password.isEmpty) {
+      _showSnackBar('E-posta ve parola boş olamaz.');
       return;
     }
 
-    final user = await _registerModel.register(email, password, displayName);
-
+    final user = await _loginModel.login(email, password);
     if (user != null) {
-      // Kayıt başarılı
-      _showSnackBar('Kayıt başarılı!');
+      _showSnackBar('Giriş başarılı!');
       await Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
-        // ignore: inference_failure_on_instance_creation
         MaterialPageRoute(builder: (context) => const HomeView()),
       );
     } else {
-      // Kayıt hatası
-      _showSnackBar('Kullanıcı kaydedilemedi.');
+      _showSnackBar('Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.');
     }
   }
 

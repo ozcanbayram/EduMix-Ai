@@ -1,15 +1,14 @@
-// import 'package:edumix/product/constant/image_enum.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:flutter/material.dart';
 
-class FeedScreen extends StatefulWidget {
-  const FeedScreen({super.key});
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  State<FeedScreen> createState() => _FeedScreenState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _FeedScreenState extends State<FeedScreen> {
+class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
