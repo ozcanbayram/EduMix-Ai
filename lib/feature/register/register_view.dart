@@ -2,7 +2,6 @@ import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/feature/home/home_view.dart';
 import 'package:edumix/feature/login/login_view.dart';
 import 'package:edumix/feature/register/register_model.dart'; // Yeni model dosyasını içe aktar
-import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/product/widgets/auth_text_button.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/custom_text_field.dart';

@@ -104,6 +104,7 @@ class _LoginViewState extends State<LoginView> {
       _showSnackBar('Giriş başarılı!');
       await Navigator.pushReplacement(
         context,
+        // ignore: inference_failure_on_instance_creation
         MaterialPageRoute(builder: (context) => const HomeView()),
       );
     } else {

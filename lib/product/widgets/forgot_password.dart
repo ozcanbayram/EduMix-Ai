@@ -32,7 +32,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ImageEnums.forgot.toImage,
+              Padding(
+                padding: context.padding.medium,
+                child: ImageEnums.forgot.toImage,
+              ),
               Text(
                 textAlign: TextAlign.center,
                 'E-posta adresine parolanı yenilemen \niçin bir bağlantı göndereceğiz.',
