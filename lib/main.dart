@@ -1,10 +1,11 @@
-import 'package:edumix/feature/register/register_view.dart';
+import 'package:edumix/feature/welcome/welcome_view.dart';
+import 'package:edumix/product/initialize/application_start.dart';
 import 'package:edumix/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
+Future<void> main() async {
+  await ApplicationStart.init();
   runApp(const MyApp());
 }
 
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       // ),
       theme: lightTheme,
-      home: const ProviderScope(child: RegisterView()),
+      home: const WelcomePage(),
+      // home: const ProviderScope(child: RegisterView()),
     );
   }
 }

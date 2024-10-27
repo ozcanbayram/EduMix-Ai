@@ -1,4 +1,5 @@
 import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/feature/register/register_view.dart';
 import 'package:edumix/feature/welcome/page_view_welcome.dart';
 import 'package:edumix/feature/welcome/welcome_model.dart';
 import 'package:edumix/feature/welcome/welcome_selector.dart';
@@ -87,7 +88,14 @@ class _WelcomePageState extends State<WelcomePage>
             WelcomeSelector(tabController: _tabController),
             ButtonLarge(
               buttonsText: ProjectText.registerButton,
-              onPressed: () {},
+              //! Geçici (Düzenlenecek)
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  // ignore: inference_failure_on_instance_creation
+                  MaterialPageRoute(builder: (context) => const RegisterView()),
+                );
+              },
             ),
             AuthTextButton(
               text: ProjectText.haveAccountLogin,
