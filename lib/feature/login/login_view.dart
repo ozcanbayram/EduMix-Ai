@@ -2,6 +2,7 @@ import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/feature/forgot_password/forgot_password.dart';
 import 'package:edumix/feature/home/home_view.dart';
 import 'package:edumix/feature/login/login_model.dart';
+import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/widgets/auth_text_button.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/custom_text_field.dart';
@@ -44,26 +45,15 @@ class _LoginViewState extends State<LoginView> {
               const LogoWidget(),
               Column(
                 children: [
-                  CustomTextField(
-                    nameController: _emailController,
-                    prefixIcon: const Icon(Icons.email),
-                    textInputAction: TextInputAction.next,
-                    labelText: ProjectText.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  CustomTextField(
+                  CustomEmailField(nameController: _emailController),
+                  CustomPasswordField(
                     nameController: _passwordController,
                     obscureText: !passwordVisibility,
-                    suffixIcon: IconButton(
-                      onPressed: _changePasswordVisibility,
-                      icon: passwordVisibility
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                    ),
-                    prefixIcon: const Icon(Icons.lock),
-                    textInputAction: TextInputAction.done,
-                    labelText: ProjectText.password,
-                    keyboardType: TextInputType.text,
+                    suffixIcon: passwordVisibility
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
+                    onPressed: _changePasswordVisibility,
+                    textInputAction: TextInputAction.next,
                   ),
                 ],
               ),
@@ -96,13 +86,13 @@ class _LoginViewState extends State<LoginView> {
     final password = _passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      _showSnackBar(ProjectText.warningEmptyInput);
+      showCustomSnackBar(context, ProjectText.warningEmptyInput);
       return;
     }
 
     final user = await _loginModel.login(email, password);
     if (user != null) {
-      _showSnackBar(ProjectText.successLogin);
+      showCustomSnackBar(context, ProjectText.successLogin);
       await Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
@@ -110,16 +100,7 @@ class _LoginViewState extends State<LoginView> {
         MaterialPageRoute(builder: (context) => const HomeView()),
       );
     } else {
-      _showSnackBar(ProjectText.failedLogin);
+      showCustomSnackBar(context, ProjectText.failedLogin);
     }
-  }
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 }

@@ -2,6 +2,7 @@ import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/feature/home/home_view.dart';
 import 'package:edumix/feature/login/login_view.dart';
 import 'package:edumix/feature/register/register_model.dart'; // Yeni model dosyasını içe aktar
+import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/widgets/auth_text_button.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/custom_text_field.dart';
@@ -53,47 +54,25 @@ class _RegisterViewState extends State<RegisterView> {
               const LogoWidget(),
               Column(
                 children: [
-                  CustomTextField(
-                    nameController: _nameController,
-                    prefixIcon: const Icon(Icons.person),
-                    textInputAction: TextInputAction.next,
-                    labelText: ProjectText.name,
-                    keyboardType: TextInputType.text,
-                  ),
-                  CustomTextField(
-                    nameController: _emailController,
-                    prefixIcon: const Icon(Icons.email),
-                    textInputAction: TextInputAction.next,
-                    labelText: ProjectText.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  CustomTextField(
+                  CustomNameField(nameController: _nameController),
+                  CustomEmailField(nameController: _emailController),
+                  CustomPasswordField(
                     nameController: _passwordController,
                     obscureText: !passwordVisibility,
-                    suffixIcon: IconButton(
-                      onPressed: _changePasswordVisibility,
-                      icon: passwordVisibility
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                    ),
-                    prefixIcon: const Icon(Icons.lock),
+                    suffixIcon: passwordVisibility
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
+                    onPressed: _changePasswordVisibility,
                     textInputAction: TextInputAction.next,
-                    labelText: ProjectText.password,
-                    keyboardType: TextInputType.text,
                   ),
-                  CustomTextField(
+                  CustomPasswordField(
                     nameController: _passwordAgainController,
                     obscureText: !passwordAgainVisibility,
-                    suffixIcon: IconButton(
-                      onPressed: _changePassworAgaindVisibility,
-                      icon: passwordAgainVisibility
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                    ),
-                    prefixIcon: const Icon(Icons.lock),
-                    textInputAction: TextInputAction.done,
-                    labelText: ProjectText.passwordAgain,
-                    keyboardType: TextInputType.text,
+                    suffixIcon: passwordAgainVisibility
+                        ? const Icon(Icons.visibility_off)
+                        : const Icon(Icons.visibility),
+                    onPressed: _changePassworAgaindVisibility,
+                    textInputAction: TextInputAction.next,
                   ),
                 ],
               ),
@@ -127,11 +106,11 @@ class _RegisterViewState extends State<RegisterView> {
     final displayName = _nameController.text;
 
     if (email.isEmpty || displayName.isEmpty) {
-      _showSnackBar(ProjectText.warningEmptyInput);
+      showCustomSnackBar(context, ProjectText.warningEmptyInput);
       return;
     }
     if (password != passwordAgain) {
-      _showSnackBar(ProjectText.warningPasswordControll);
+      showCustomSnackBar(context, ProjectText.warningPasswordControll);
       return;
     }
 
@@ -139,7 +118,8 @@ class _RegisterViewState extends State<RegisterView> {
 
     if (user != null) {
       // Kayıt başarılı
-      _showSnackBar(ProjectText.successRegister);
+      showCustomSnackBar(context, ProjectText.successRegister);
+
       await Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
@@ -148,16 +128,7 @@ class _RegisterViewState extends State<RegisterView> {
       );
     } else {
       // Kayıt hatası
-      _showSnackBar(ProjectText.failedRegister);
+      showCustomSnackBar(context, ProjectText.failedRegister);
     }
-  }
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 }

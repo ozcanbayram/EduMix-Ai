@@ -34,7 +34,7 @@ class ProjectText {
       'E-posta adresine parolanı yenilemen \niçin bir bağlantı göndereceğiz.';
 
   //! AUTH METHODS TEXTS
-  static const warningEmptyInput = 'E-posta ve ad soyad boş olamaz.';
+  static const warningEmptyInput = 'Bilgiler boş bırakılamaz.';
   static const warningPasswordControll = 'Parolalar aynı değil.';
   static const warningEmptyEmail = 'E-posta adresi boş olamaz.';
   static const successRegister = 'Kayıt Başarılı';
@@ -43,5 +43,6 @@ class ProjectText {
       'Kayıt başarısız oldu daha sonra tekrar deneyin.';
   static const failedLogin =
       'Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.';
-  static const sendedResetPasswordConnection = 'Parola sıfırlama e-postası gönderildi.';
+  static const sendedResetPasswordConnection =
+      'Parola sıfırlama e-postası gönderildi.';
 }

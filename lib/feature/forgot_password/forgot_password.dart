@@ -2,6 +2,7 @@ import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:edumix/core/enums/image_enum.dart';
+import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/services/auth_service.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/custom_text_field.dart';
@@ -46,13 +47,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       fontSize: WidgetSizes.normalDescriptionSize,
                     ),
               ),
-              CustomTextField(
-                nameController: _emailController,
-                prefixIcon: const Icon(Icons.email),
-                textInputAction: TextInputAction.done,
-                labelText: ProjectText.email,
-                keyboardType: TextInputType.emailAddress,
-              ),
+              CustomEmailField(nameController: _emailController),
               ButtonLarge(
                 onPressed: _resetPassword,
                 buttonsText: ProjectText.sendEmail,
@@ -67,22 +62,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Future<void> _resetPassword() async {
     final email = _emailController.text.trim();
     if (email.isEmpty) {
-      _showSnackBar(ProjectText.warningEmptyEmail);
+      showCustomSnackBar(context, ProjectText.warningEmptyEmail);
       return;
     }
 
     await _authService.resetPassword(email);
-    _showSnackBar(ProjectText.sendedResetPasswordConnection);
+    showCustomSnackBar(context, ProjectText.sendedResetPasswordConnection);
     // ignore: use_build_context_synchronously
     Navigator.pop(context); // Kullanıcıyı bir önceki sayfaya yönlendir
-  }
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
-    );
   }
 }
