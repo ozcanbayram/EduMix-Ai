@@ -57,14 +57,14 @@ class _RegisterViewState extends State<RegisterView> {
                     nameController: _nameController,
                     prefixIcon: const Icon(Icons.person),
                     textInputAction: TextInputAction.next,
-                    labelText: 'Ad Soyad',
+                    labelText: ProjectText.name,
                     keyboardType: TextInputType.text,
                   ),
                   CustomTextField(
                     nameController: _emailController,
                     prefixIcon: const Icon(Icons.email),
                     textInputAction: TextInputAction.next,
-                    labelText: 'E posta',
+                    labelText: ProjectText.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
                   CustomTextField(
@@ -78,7 +78,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     prefixIcon: const Icon(Icons.lock),
                     textInputAction: TextInputAction.next,
-                    labelText: 'Parola',
+                    labelText: ProjectText.password,
                     keyboardType: TextInputType.text,
                   ),
                   CustomTextField(
@@ -92,7 +92,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     prefixIcon: const Icon(Icons.lock),
                     textInputAction: TextInputAction.done,
-                    labelText: 'Parola Tekrar',
+                    labelText: ProjectText.passwordAgain,
                     keyboardType: TextInputType.text,
                   ),
                 ],
@@ -127,11 +127,11 @@ class _RegisterViewState extends State<RegisterView> {
     final displayName = _nameController.text;
 
     if (email.isEmpty || displayName.isEmpty) {
-      _showSnackBar('E-posta ve ad soyad boş olamaz.');
+      _showSnackBar(ProjectText.warningEmptyInput);
       return;
     }
     if (password != passwordAgain) {
-      _showSnackBar('Parolalar aynı değil.');
+      _showSnackBar(ProjectText.warningPasswordControll);
       return;
     }
 
@@ -139,7 +139,7 @@ class _RegisterViewState extends State<RegisterView> {
 
     if (user != null) {
       // Kayıt başarılı
-      _showSnackBar('Kayıt başarılı!');
+      _showSnackBar(ProjectText.successRegister);
       await Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
@@ -148,7 +148,7 @@ class _RegisterViewState extends State<RegisterView> {
       );
     } else {
       // Kayıt hatası
-      _showSnackBar('Kullanıcı kaydedilemedi.');
+      _showSnackBar(ProjectText.failedRegister);
     }
   }
 

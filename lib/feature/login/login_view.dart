@@ -1,10 +1,10 @@
 import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/feature/forgot_password/forgot_password.dart';
 import 'package:edumix/feature/home/home_view.dart';
 import 'package:edumix/feature/login/login_model.dart';
 import 'package:edumix/product/widgets/auth_text_button.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/custom_text_field.dart';
-import 'package:edumix/product/widgets/forgot_password.dart';
 import 'package:edumix/product/widgets/logo_widget.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class _LoginViewState extends State<LoginView> {
                     nameController: _emailController,
                     prefixIcon: const Icon(Icons.email),
                     textInputAction: TextInputAction.next,
-                    labelText: 'E-posta',
+                    labelText: ProjectText.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
                   CustomTextField(
@@ -62,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
                     ),
                     prefixIcon: const Icon(Icons.lock),
                     textInputAction: TextInputAction.done,
-                    labelText: 'Parola',
+                    labelText: ProjectText.password,
                     keyboardType: TextInputType.text,
                   ),
                 ],
@@ -96,13 +96,13 @@ class _LoginViewState extends State<LoginView> {
     final password = _passwordController.text;
 
     if (email.isEmpty || password.isEmpty) {
-      _showSnackBar('E-posta ve parola boş olamaz.');
+      _showSnackBar(ProjectText.warningEmptyInput);
       return;
     }
 
     final user = await _loginModel.login(email, password);
     if (user != null) {
-      _showSnackBar('Giriş başarılı!');
+      _showSnackBar(ProjectText.successLogin);
       await Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
@@ -110,7 +110,7 @@ class _LoginViewState extends State<LoginView> {
         MaterialPageRoute(builder: (context) => const HomeView()),
       );
     } else {
-      _showSnackBar('Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.');
+      _showSnackBar(ProjectText.failedLogin);
     }
   }
 

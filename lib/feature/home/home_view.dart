@@ -22,6 +22,7 @@ class _HomeViewState extends State<HomeView> {
           ProjectText.appName,
           style: Theme.of(context).textTheme.titleLarge,
         ),
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: ButtonLarge(

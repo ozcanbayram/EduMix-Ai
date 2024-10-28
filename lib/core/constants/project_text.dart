@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 class ProjectText {
   const ProjectText._(); // Sadece sınıf içeinden erişilebilir.
 
+  //! MAIN TEXTS
+
   static const String appName = 'EduMix';
+
+  //! ON BOARD TEXTS
 
   static const String firstWelcomeText =
       'Yapay zeka taradınfan oluşturulan \nsayısız bilgi EduMix’te.';
@@ -15,9 +19,29 @@ class ProjectText {
   static const String thirdWelcomeText =
       'Bilgi her zaman vardır \nsadece onu bulmanı bekler. ';
 
-  static const String haveAccountLogin = 'Zaten bir hesabın var mı? Giriş Yap';
+  //! AUTH SCREENS TEXTS
 
+  static const String haveAccountLogin = 'Zaten bir hesabın var mı? Giriş Yap';
   static const String registerButton = 'Kayıt Ol';
   static const String loginButton = 'Giriş Yap';
+  static const String name = 'Ad Soyad';
+  static const String email = 'E posta';
+  static const String password = 'Parola';
+  static const String passwordAgain = 'Parola Tekrar';
   static const String forgotPassword = 'Parolamı Unuttum';
+  static const String sendEmail = 'E posta Gönder';
+  static const String forgotPasswordText =
+      'E-posta adresine parolanı yenilemen \niçin bir bağlantı göndereceğiz.';
+
+  //! AUTH METHODS TEXTS
+  static const warningEmptyInput = 'E-posta ve ad soyad boş olamaz.';
+  static const warningPasswordControll = 'Parolalar aynı değil.';
+  static const warningEmptyEmail = 'E-posta adresi boş olamaz.';
+  static const successRegister = 'Kayıt Başarılı';
+  static const successLogin = 'Giriş Başarılı';
+  static const failedRegister =
+      'Kayıt başarısız oldu daha sonra tekrar deneyin.';
+  static const failedLogin =
+      'Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.';
+  static const sendedResetPasswordConnection = 'Parola sıfırlama e-postası gönderildi.';
 }

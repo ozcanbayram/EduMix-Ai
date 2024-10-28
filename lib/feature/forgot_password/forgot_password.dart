@@ -13,6 +13,7 @@ class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
 
@@ -38,7 +39,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
               Text(
                 textAlign: TextAlign.center,
-                'E-posta adresine parolanı yenilemen \niçin bir bağlantı göndereceğiz.',
+                ProjectText.forgotPasswordText,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: ColorItems.project_text_color,
                       fontWeight: FontWeight.bold,
@@ -49,11 +50,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 nameController: _emailController,
                 prefixIcon: const Icon(Icons.email),
                 textInputAction: TextInputAction.done,
-                labelText: 'E-posta',
+                labelText: ProjectText.email,
                 keyboardType: TextInputType.emailAddress,
               ),
-              const SizedBox(height: 20),
-              ButtonLarge(onPressed: _resetPassword, buttonsText: 'sifirla'),
+              ButtonLarge(
+                onPressed: _resetPassword,
+                buttonsText: ProjectText.sendEmail,
+              ),
             ],
           ),
         ),
@@ -64,12 +67,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Future<void> _resetPassword() async {
     final email = _emailController.text.trim();
     if (email.isEmpty) {
-      _showSnackBar('E-posta adresi boş olamaz.');
+      _showSnackBar(ProjectText.warningEmptyEmail);
       return;
     }
 
     await _authService.resetPassword(email);
-    _showSnackBar('Parola sıfırlama e-postası gönderildi.');
+    _showSnackBar(ProjectText.sendedResetPasswordConnection);
+    // ignore: use_build_context_synchronously
     Navigator.pop(context); // Kullanıcıyı bir önceki sayfaya yönlendir
   }
 
