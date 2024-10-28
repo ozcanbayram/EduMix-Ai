@@ -1,13 +1,12 @@
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/feature/login/login_view.dart';
 import 'package:edumix/feature/register/register_view.dart';
-import 'package:edumix/feature/welcome/page_view_welcome.dart';
 import 'package:edumix/feature/welcome/welcome_model.dart';
-import 'package:edumix/feature/welcome/welcome_selector.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/widgets/auth_text_button.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
+import 'package:edumix/product/widgets/welcome_pages_widgets.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatefulWidget {
