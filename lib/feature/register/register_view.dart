@@ -69,12 +69,12 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   CustomTextField(
                     nameController: _passwordController,
-                    obscureText: passwordVisibility,
+                    obscureText: !passwordVisibility,
                     suffixIcon: IconButton(
                       onPressed: _changePasswordVisibility,
                       icon: passwordVisibility
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off),
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
                     ),
                     prefixIcon: const Icon(Icons.lock),
                     textInputAction: TextInputAction.next,
@@ -83,12 +83,12 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   CustomTextField(
                     nameController: _passwordAgainController,
-                    obscureText: passwordAgainVisibility,
+                    obscureText: !passwordAgainVisibility,
                     suffixIcon: IconButton(
                       onPressed: _changePassworAgaindVisibility,
                       icon: passwordAgainVisibility
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off),
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
                     ),
                     prefixIcon: const Icon(Icons.lock),
                     textInputAction: TextInputAction.done,

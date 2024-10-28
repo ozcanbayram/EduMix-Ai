@@ -45,10 +45,6 @@ class _WelcomePageState extends State<WelcomePage>
   void syncTabWithPage() {
     if (_tabController.indexIsChanging) {
       _pageController.jumpToPage(_tabController.index);
-
-      // prints for debugg:
-      // print(_tabController.index);
-      // print(_pageController.page);
     }
   }
 
@@ -59,14 +55,6 @@ class _WelcomePageState extends State<WelcomePage>
     _pageController.dispose();
     super.dispose();
   }
-
-  //! ************************
-  //! ************************
-  //! ************************
-  //! ************************
-  //! ************************
-  //! ************************
-  //! ************************
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +71,8 @@ class _WelcomePageState extends State<WelcomePage>
               child: PageViewWelcome(
                 pageController: _pageController,
                 onPageChanged: (index) => _tabController.animateTo(index),
-                // (index): yeni sayfanın sırasini alir ve tabController'i günceller
+                // (index): yeni sayfanın sırasini alir ve 
+                //tabController'i günceller
               ),
             ),
             WelcomeSelector(tabController: _tabController),
@@ -94,7 +83,9 @@ class _WelcomePageState extends State<WelcomePage>
                 Navigator.push(
                   context,
                   // ignore: inference_failure_on_instance_creation
-                  MaterialPageRoute(builder: (context) => const RegisterView()),
+                  MaterialPageRoute(
+                    builder: (context) => const RegisterView(),
+                  ),
                 );
               },
             ),

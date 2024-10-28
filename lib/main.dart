@@ -1,4 +1,3 @@
-import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/product/initialize/application_start.dart';
 import 'package:edumix/product/widgets/auth_wrapper.dart';
 import 'package:edumix/theme/light_theme.dart';

@@ -36,8 +36,9 @@ class _HomeViewState extends State<HomeView> {
     await _authService.signOut(); // Çıkış işlemi
 
     // Çıkış sonrası giriş sayfasına yönlendirme
-    Navigator.pushReplacement(
+    await Navigator.pushReplacement(
       context,
+      // ignore: inference_failure_on_instance_creation
       MaterialPageRoute(builder: (context) => const WelcomePage()),
     );
   }

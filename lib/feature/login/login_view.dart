@@ -13,6 +13,7 @@ class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginViewState createState() => _LoginViewState();
 }
 
@@ -52,12 +53,12 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   CustomTextField(
                     nameController: _passwordController,
-                    obscureText: passwordVisibility,
+                    obscureText: !passwordVisibility,
                     suffixIcon: IconButton(
                       onPressed: _changePasswordVisibility,
                       icon: passwordVisibility
-                          ? const Icon(Icons.visibility)
-                          : const Icon(Icons.visibility_off),
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
                     ),
                     prefixIcon: const Icon(Icons.lock),
                     textInputAction: TextInputAction.done,
@@ -103,6 +104,7 @@ class _LoginViewState extends State<LoginView> {
     if (user != null) {
       _showSnackBar('Giriş başarılı!');
       await Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         // ignore: inference_failure_on_instance_creation
         MaterialPageRoute(builder: (context) => const HomeView()),
