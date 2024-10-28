@@ -9,15 +9,15 @@ import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+class ForgotPasswordView extends StatefulWidget {
+  const ForgotPasswordView({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordView> {
   final TextEditingController _emailController = TextEditingController();
   final AuthService _authService = AuthService(); // AuthService örneği
 

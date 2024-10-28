@@ -1,5 +1,5 @@
 import 'package:edumix/core/constants/project_text.dart';
-import 'package:edumix/feature/forgot_password/forgot_password.dart';
+import 'package:edumix/feature/forgot_password/forgot_password_view.dart';
 import 'package:edumix/feature/home/home_view.dart';
 import 'package:edumix/feature/login/login_model.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
@@ -63,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               AuthTextButton(
                 onPressed: () {
-                  navigateTo(context, const ForgotPasswordScreen());
+                  navigateTo(context, const ForgotPasswordView());
                 },
                 text: ProjectText.forgotPassword,
               ),
@@ -85,7 +85,7 @@ class _LoginViewState extends State<LoginView> {
 
     final user = await _loginModel.login(email, password);
     if (user != null) {
-      //* kayit basarili, mesaj goster ve yonlendir:
+      //*kayit basarili, mesaj goster ve yonlendir:
       // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.successLogin);
       // ignore: use_build_context_synchronously
