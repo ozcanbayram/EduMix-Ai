@@ -4,6 +4,7 @@ import 'package:edumix/feature/register/register_view.dart';
 import 'package:edumix/feature/welcome/page_view_welcome.dart';
 import 'package:edumix/feature/welcome/welcome_model.dart';
 import 'package:edumix/feature/welcome/welcome_selector.dart';
+import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/widgets/auth_text_button.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
@@ -71,33 +72,21 @@ class _WelcomePageState extends State<WelcomePage>
               child: PageViewWelcome(
                 pageController: _pageController,
                 onPageChanged: (index) => _tabController.animateTo(index),
-                // (index): yeni sayfanın sırasini alir ve 
+                // (index): yeni sayfanın sırasini alir ve
                 //tabController'i günceller
               ),
             ),
             WelcomeSelector(tabController: _tabController),
             ButtonLarge(
               buttonsText: ProjectText.registerButton,
-              //! Geçici (Düzenlenecek)
               onPressed: () {
-                Navigator.push(
-                  context,
-                  // ignore: inference_failure_on_instance_creation
-                  MaterialPageRoute(
-                    builder: (context) => const RegisterView(),
-                  ),
-                );
+                navigateTo(context, const RegisterView());
               },
             ),
             AuthTextButton(
               text: ProjectText.haveAccountLogin,
               onPressed: () {
-                Navigator.push(
-                  // ignore: use_build_context_synchronously
-                  context,
-                  // ignore: inference_failure_on_instance_creation
-                  MaterialPageRoute(builder: (context) => const LoginView()),
-                );
+                navigateTo(context, const LoginView());
               },
             ),
           ],

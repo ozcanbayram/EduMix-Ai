@@ -82,12 +82,7 @@ class _RegisterViewState extends State<RegisterView> {
               ),
               AuthTextButton(
                 onPressed: () {
-                  Navigator.push(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    // ignore: inference_failure_on_instance_creation
-                    MaterialPageRoute(builder: (context) => const LoginView()),
-                  );
+                  navigateTo(context, const LoginView());
                 },
                 text: ProjectText.haveAccountLogin,
               ),
@@ -117,17 +112,14 @@ class _RegisterViewState extends State<RegisterView> {
     final user = await _registerModel.register(email, password, displayName);
 
     if (user != null) {
-      // Kayıt başarılı
+      //* kayit basarili, mesaj goster ve yonlendir:
+      // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.successRegister);
-
-      await Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
-        context,
-        // ignore: inference_failure_on_instance_creation
-        MaterialPageRoute(builder: (context) => const HomeView()),
-      );
+      // ignore: use_build_context_synchronously
+      navigateReplacementTo(context, const HomeView());
     } else {
       // Kayıt hatası
+      // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.failedRegister);
     }
   }

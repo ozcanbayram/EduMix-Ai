@@ -63,14 +63,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               AuthTextButton(
                 onPressed: () {
-                  Navigator.push(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    // ignore: inference_failure_on_instance_creation
-                    MaterialPageRoute(
-                      builder: (context) => const ForgotPasswordScreen(),
-                    ),
-                  );
+                  navigateTo(context, const ForgotPasswordScreen());
                 },
                 text: ProjectText.forgotPassword,
               ),
@@ -92,14 +85,13 @@ class _LoginViewState extends State<LoginView> {
 
     final user = await _loginModel.login(email, password);
     if (user != null) {
+      //* kayit basarili, mesaj goster ve yonlendir:
+      // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.successLogin);
-      await Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
-        context,
-        // ignore: inference_failure_on_instance_creation
-        MaterialPageRoute(builder: (context) => const HomeView()),
-      );
+      // ignore: use_build_context_synchronously
+      navigateReplacementTo(context, const HomeView());
     } else {
+      // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.failedLogin);
     }
   }

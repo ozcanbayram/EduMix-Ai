@@ -1,11 +1,10 @@
-import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
-import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:edumix/core/enums/image_enum.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/services/auth_service.dart';
 import 'package:edumix/product/widgets/button_large.dart';
 import 'package:edumix/product/widgets/custom_text_field.dart';
+import 'package:edumix/product/widgets/description_texts.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
@@ -38,15 +37,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 padding: context.padding.medium,
                 child: ImageEnums.forgot.toImage,
               ),
-              Text(
-                textAlign: TextAlign.center,
-                ProjectText.forgotPasswordText,
-                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: ColorItems.project_text_color,
-                      fontWeight: FontWeight.bold,
-                      fontSize: WidgetSizes.normalDescriptionSize,
-                    ),
-              ),
+              const MainDescriptionWidget(text: ProjectText.forgotPassword),
               CustomEmailField(nameController: _emailController),
               ButtonLarge(
                 onPressed: _resetPassword,
@@ -67,6 +58,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     }
 
     await _authService.resetPassword(email);
+    // ignore: use_build_context_synchronously
     showCustomSnackBar(context, ProjectText.sendedResetPasswordConnection);
     // ignore: use_build_context_synchronously
     Navigator.pop(context); // Kullanıcıyı bir önceki sayfaya yönlendir
