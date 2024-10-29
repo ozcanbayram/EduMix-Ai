@@ -1,7 +1,4 @@
-import 'package:edumix/core/constants/project_text.dart';
-import 'package:edumix/feature/welcome/welcome_view.dart';
-import 'package:edumix/product/services/auth_service.dart';
-import 'package:edumix/product/widgets/button_large.dart';
+import 'package:edumix/product/services/category_service.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -12,35 +9,57 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final AuthService _authService = AuthService(); // AuthService örneği
+  final CategoryService _categoryService = CategoryService();
+
+  List<String> _categories = [];
+  bool _isLoading = true; // Yükleme durumu için değişken
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
+
+  Future<void> _loadCategories() async {
+    try {
+      final categories = await _categoryService.alphabeticalFetchCategories();
+      setState(() {
+        _categories = categories;
+        _isLoading = false; // Yükleme tamamlandığında durumu güncelle
+      });
+    } catch (e) {
+      print('Error loading categories: $e');
+      setState(() {
+        _isLoading = false; // Hata durumunda da durumu güncelle
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          ProjectText.appName,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: ButtonLarge(
-          onPressed: _signOut, // Çıkış fonksiyonunu bağlayın
-          buttonsText: 'Çık',
-        ),
-      ),
-    );
-  }
-
-  Future<void> _signOut() async {
-    await _authService.signOut(); // Çıkış işlemi
-
-    // Çıkış sonrası giriş sayfasına yönlendirme
-    await Navigator.pushReplacement(
-      context,
-      // ignore: inference_failure_on_instance_creation
-      MaterialPageRoute(builder: (context) => const WelcomePage()),
+      appBar: AppBar(title: const Text('Kategoriler')),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            ) // Yükleme göstergesi
+          : _categories.isEmpty // Veri yoksa mesaj göster
+              ? const Center(child: Text('Kategoriler bulunamadı.'))
+              : ListView.builder(
+                  itemCount: _categories.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                        _categories[index],
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      onTap: () {
+                        // Kategoriye tıklandığında yapılacak işlemler
+                        // Yeni sayfaya yönlendirme yapılabilir
+                      },
+                    );
+                  },
+                ),
     );
   }
 }
