@@ -1,5 +1,6 @@
 # EduMix Ai  
 # BU REPO HENÜZ TAMAMLANMADI. 3 KASIMA KADAR TAMAMLANACAK (HACKATONA KATILMAK İÇİN.)
+# Temiz ve özenerek yazdığım bu repoyu daha detaylı bir Readme ile yayınlayacağım. Önerileriniz için issue-pr açarak bana yardımcı olabilirsiniz. :)
 
 A new Flutter project.
 
