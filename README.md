@@ -1,4 +1,4 @@
-# edumix
+# edumix  BU REPO HENÜZ TAMAMLANMADI. 3 KASIMA KADAR TAMAMLANACAK (HACKATONA KATILMAK İÇİN.)
 
 A new Flutter project.
 
