@@ -3,9 +3,12 @@ import 'package:edumix/product/widgets/auth_wrapper.dart';
 import 'package:edumix/theme/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
-  await ApplicationStart.init();
+  await dotenv.load(); // .env dosyasını yükle
+  await ApplicationStart.init(); // Firebase'i başlat
+
   runApp(const MyApp());
 }
 

@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -46,30 +47,30 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCEQTljq_0i89FR7u9CdHD60J2HqBK-vjI',
-    appId: '1:439823566181:web:bfca8309b945fac931cd8c',
-    messagingSenderId: '439823566181',
-    projectId: 'edumix-0',
-    authDomain: 'edumix-0.firebaseapp.com',
-    storageBucket: 'edumix-0.appspot.com',
-    measurementId: 'G-4MBVXEY5XN',
-  );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDCRFe_3Gfu3xYaWO1fl2aalcmEC9OIYu0',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_ANDROID_API_KEY']!,
     appId: '1:439823566181:android:beb3fe0e2d52bc1c31cd8c',
     messagingSenderId: '439823566181',
     projectId: 'edumix-0',
     storageBucket: 'edumix-0.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCvudpF7juJDRh2GiOc6v7-wW3-KyCAVRY',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_IOS_API_KEY']!,
     appId: '1:439823566181:ios:dc725264f806208b31cd8c',
     messagingSenderId: '439823566181',
     projectId: 'edumix-0',
     storageBucket: 'edumix-0.appspot.com',
     iosBundleId: 'com.example.edumix',
+  );
+
+  static FirebaseOptions web = FirebaseOptions(
+    apiKey: dotenv.env['FIREBASE_WEB_API_KEY']!,
+    appId: '1:439823566181:web:bfca8309b945fac931cd8c',
+    messagingSenderId: '439823566181',
+    projectId: 'edumix-0',
+    authDomain: 'edumix-0.firebaseapp.com',
+    storageBucket: 'edumix-0.appspot.com',
+    measurementId: 'G-4MBVXEY5XN',
   );
 }
