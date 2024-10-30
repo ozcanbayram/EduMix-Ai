@@ -1,16 +1,18 @@
 import 'package:edumix/core/constants/color_items.dart';
+import 'package:edumix/core/constants/widget_sizes.dart';
+import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 ThemeData lightTheme = ThemeData.light().copyWith(
   primaryColor: ColorItems.project_blue,
   //APPBAR THEME
-  appBarTheme: AppBarTheme(
+  appBarTheme: const AppBarTheme(
     systemOverlayStyle: SystemUiOverlayStyle.dark,
     backgroundColor: ColorItems.project_scaffold_color,
-    toolbarHeight: ThemeSizes().toolBarHeight,
+    toolbarHeight: WidgetSizes.toolBarHeight,
     centerTitle: true,
-    titleTextStyle: const TextStyle(
+    titleTextStyle: TextStyle(
       color: ColorItems.project_text_color,
       fontSize: 30,
       fontWeight: FontWeight.bold,
@@ -36,8 +38,28 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       shadowColor: ColorItems.project_black,
     ),
   ),
-);
 
-class ThemeSizes {
-  final double toolBarHeight = 75;
-}
+  // LIST TILE THEME
+  listTileTheme: const ListTileThemeData(
+    contentPadding: PagePadding.all(),
+    titleTextStyle: TextStyle(
+      fontSize: WidgetSizes.mediumTextSize,
+      fontWeight: FontWeight.bold,
+      color: ColorItems.project_text_color,
+    ),
+    subtitleTextStyle: TextStyle(
+      fontSize: WidgetSizes.normalTextSize,
+      fontWeight: FontWeight.w500,
+      color: ColorItems.project_gray,
+    ),
+  ),
+
+  // CARD THEME
+  cardTheme: CardTheme(
+    elevation: 4,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+    color: ColorItems.project_white,
+  ),
+);

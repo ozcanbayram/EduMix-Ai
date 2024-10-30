@@ -12,7 +12,7 @@ void showCustomSnackBar(BuildContext context, String message) {
         style: const TextStyle(fontSize: WidgetSizes.normalDescriptionSize),
       ),
       duration: const Duration(seconds: 2),
-      backgroundColor: ColorItems.project_orange,
+      backgroundColor: ColorItems.project_gray,
     ),
   );
 }

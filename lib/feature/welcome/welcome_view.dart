@@ -61,6 +61,7 @@ class _WelcomePageState extends State<WelcomePage>
     return Scaffold(
       appBar: AppBar(
         title: const Text(ProjectText.appName),
+        leading: const SizedBox(),
       ),
       body: Padding(
         padding: const PagePadding.all(),

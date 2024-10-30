@@ -103,5 +103,30 @@ class AuthService {
       print('Error fetching user name: $e');
     }
     return null;
+
+    // Text(
+    //   _userName != null ? 'Hoşgeldin, $_userName!' : 'Hoşgeldiniz',
+    //   maxLines: 1,
+    //   style: const TextStyle(
+    //     fontSize: 22,
+    //     color: ColorItems.project_black,
+    //   ),
+    // ),
+
+    // Future<void> _loadUserName() async {
+    //   final userName = await _authService.getUserName();
+    //   setState(() {
+    //     _userName = userName ??
+    //         'Misafir'; // Kullanıcı adı bulunamazsa "Misafir" olarak ayarla
+    //   });
+    // }
+
+    //   @override
+    // void initState() {
+    //   super.initState();
+    //   _loadUserName();
+    // }
+
+    //  String? _userName;
   }
 }

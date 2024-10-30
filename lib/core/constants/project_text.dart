@@ -39,10 +39,17 @@ class ProjectText {
   static const warningEmptyEmail = 'E-posta adresi boş olamaz.';
   static const successRegister = 'Kayıt Başarılı';
   static const successLogin = 'Giriş Başarılı';
+  static const signedOuut = 'Çıkış Yapıldı';
   static const failedRegister =
       'Kayıt başarısız oldu daha sonra tekrar deneyin.';
   static const failedLogin =
       'Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.';
   static const sendedResetPasswordConnection =
       'Parola sıfırlama e-postası gönderildi.';
+
+  //! Home Screens texts:
+  static const subtitleDescription =
+      ' hakkında yapay zeka tarafından sunulan sınırsız bilgi için sadece tıkla.';
+
+  static const categoriestNotFound = 'Kategoriler bulunamadı.';
 }
