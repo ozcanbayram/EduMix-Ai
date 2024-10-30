@@ -1,11 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:edumix/core/constants/color_items.dart';
+import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/enums/image_enum.dart';
 import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/services/auth_service.dart';
 import 'package:edumix/product/services/category_service.dart';
+import 'package:edumix/product/widgets/custom_loading_vidget.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
+import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -61,7 +64,19 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SizedBox(width: 80, height: 40, child: ImageEnums.logo.toImage),
+        leading: Padding(
+          padding: const PagePadding.all(),
+          child: ImageEnums.logo.toImage,
+        ),
+        title: const Text(ProjectText.appName),
+        // Text(
+        //   _userName != null ? 'Hoşgeldin, $_userName!' : 'Hoşgeldiniz',
+        //   maxLines: 1,
+        //   style: const TextStyle(
+        //     fontSize: 22,
+        //     color: ColorItems.project_black,
+        //   ),
+        // ),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout_outlined),
@@ -71,20 +86,11 @@ class _HomeViewState extends State<HomeView> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Text(
-              _userName != null ? 'Hoşgeldin, $_userName!' : 'Hoşgeldiniz',
-              style: const TextStyle(fontSize: 18, color: Colors.red),
-            ),
-          ),
           Expanded(
             child: Padding(
               padding: const PagePadding.all(),
               child: _isLoading
-                  ? const LinearProgressIndicator(
-                      color: ColorItems.project_blue,
-                    )
+                  ? const CustomLoadingWidget()
                   : _categories.isEmpty
                       ? const Center(child: Text('Kategoriler bulunamadı.'))
                       : ListView.builder(
