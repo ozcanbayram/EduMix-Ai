@@ -52,4 +52,7 @@ class ProjectText {
       ' hakkında yapay zeka tarafından sunulan sınırsız bilgi için sadece tıkla.';
 
   static const categoriestNotFound = 'Kategoriler bulunamadı.';
+
+  //! Search Screen Text:
+  static const searchText = 'Kategori ara';
 }

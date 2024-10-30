@@ -6,4 +6,5 @@ class PagePadding extends EdgeInsets {
 
 class CustomPaddings {
   static const verticalMedium = EdgeInsetsDirectional.symmetric(vertical: 8);
+  static const allMedium = EdgeInsets.all(16);
 }

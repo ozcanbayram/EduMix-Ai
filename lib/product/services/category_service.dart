@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class CategoryService {
   // Firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final CollectionReference _categoriesRef =
+      FirebaseFirestore.instance.collection('Categories');
 
   //! Kategorileri karisik çekme
   Future<List<String>> fetchCategories() async {
@@ -50,10 +52,27 @@ class CategoryService {
     } catch (e) {
       // Hata durumunda hata mesajını yazdırıyoruz
       print(
-        ' ???? ***** ???? **** ???? **** HATA BURADA ???? ***** ???? **** ???? ****  Kategorileri çekerken hata oluştu: $e',
+        'Kategorileri çekerken hata oluştu: $e',
       );
       // Boş bir liste döndürüyoruz
       return [];
     }
+  }
+
+  // Arama fonksiyonu
+  Future<List<Map<String, dynamic>>> searchCategories(String query) async {
+    // Küçük harfe dönüştürülmüş sorgu
+    final lowerCaseQuery = query.toLowerCase();
+
+    // Tüm kategorileri çek
+    final querySnapshot = await _categoriesRef.get();
+
+    // Sonuçları küçük harf duyarlılığı olmadan filtreleyerek döndür
+    return querySnapshot.docs
+        .map((doc) => doc.data()! as Map<String, dynamic>)
+        .where((category) {
+      final categoryName = category['name']?.toString().toLowerCase() ?? '';
+      return categoryName.contains(lowerCaseQuery);
+    }).toList();
   }
 }

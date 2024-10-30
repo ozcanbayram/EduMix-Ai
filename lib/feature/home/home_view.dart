@@ -8,6 +8,7 @@ import 'package:edumix/product/services/category_service.dart';
 import 'package:edumix/product/widgets/custom_loading_vidget.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -59,6 +60,39 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: Container(
+        color: ColorItems.project_scaffold_color,
+        child: Padding(
+          padding: const PagePadding.all(),
+          child: GNav(
+            padding: const PagePadding.all(),
+            gap: 10,
+            backgroundColor: ColorItems.project_scaffold_color,
+            color: ColorItems.project_text_color,
+            rippleColor: ColorItems.project_orange,
+            activeColor: ColorItems.project_white,
+            tabBackgroundColor: ColorItems.project_blue,
+            onTabChange: (value) {},
+            tabs: const [
+              GButton(
+                icon: Icons.home_outlined,
+                iconSize: 30,
+                text: 'Anasayfa',
+              ),
+              GButton(
+                icon: Icons.search,
+                text: 'Kategori Ara',
+                iconSize: 30,
+              ),
+              GButton(
+                icon: Icons.favorite_border_outlined,
+                iconSize: 30,
+                text: 'Beğeniler',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
