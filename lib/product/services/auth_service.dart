@@ -88,4 +88,20 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  // Kullanıcı adını Firestore'dan çekme
+  Future<String?> getUserName() async {
+    try {
+      final user = _auth.currentUser;
+      if (user != null) {
+        // Kullanıcının Firestore'daki belgesini al
+        final userDoc =
+            await _firestore.collection('users').doc(user.uid).get();
+        return userDoc.data()?['displayName'] as String?;
+      }
+    } catch (e) {
+      print('Error fetching user name: $e');
+    }
+    return null;
+  }
 }

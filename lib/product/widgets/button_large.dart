@@ -22,6 +22,9 @@ class ButtonLarge extends StatelessWidget {
         height: WidgetSizes.buttonLargeHeight,
         width: double.infinity,
         child: ElevatedButton(
+          style: const ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(ColorItems.project_blue),
+          ),
           onPressed: onPressed,
           child: Text(
             buttonsText,

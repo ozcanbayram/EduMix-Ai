@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/enums/image_enum.dart';
 import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/services/auth_service.dart';
 import 'package:edumix/product/services/category_service.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
-import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -15,15 +16,25 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final CategoryService _categoryService = CategoryService();
+  final AuthService _authService = AuthService();
+
   List<String> _categories = [];
   bool _isLoading = true;
-
-  final AuthService _authService = AuthService(); // AuthService örneği
+  String? _userName;
 
   @override
   void initState() {
     super.initState();
     _loadCategories();
+    _loadUserName();
+  }
+
+  Future<void> _loadUserName() async {
+    final userName = await _authService.getUserName();
+    setState(() {
+      _userName = userName ??
+          'Misafir'; // Kullanıcı adı bulunamazsa "Misafir" olarak ayarla
+    });
   }
 
   Future<void> _loadCategories() async {
@@ -41,6 +52,11 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  Future<void> _signOut() async {
+    await _authService.signOut();
+    navigateReplacementTo(context, const WelcomePage());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,81 +69,65 @@ class _HomeViewState extends State<HomeView> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const PagePadding.all(),
-        child: _isLoading
-            ? const LinearProgressIndicator() // Yükleme göstergesi
-            : _categories.isEmpty
-                ? const Center(child: Text('Kategoriler bulunamadı.'))
-                : ListView.builder(
-                    itemCount: _categories.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        color: const Color.fromARGB(255, 234, 242, 255),
-                        child: ListTile(
-                          titleAlignment: ListTileTitleAlignment.center,
-                          // leading: const Icon(
-                          //   Icons.menu_book_outlined,
-                          //   // color: context.general.randomColor,
-                          //   color: ColorItems.project_blue,
-                          // ),
-
-                          trailing: const Icon(Icons.chevron_right_outlined),
-                          subtitle: Text(
-                            '${_categories[index]} hakkında sınırsız bilgi için sadece tıkla.',
-                          ),
-                          title: Text(
-                            _categories[index], // Kategori adını gösterir
-                            style: const TextStyle(
-                              fontSize: 18, // Yazı boyutunu ayarlamak için
-                              fontWeight: FontWeight.bold, // Yazı kalınlığı
-                              color: Colors.black, // Yazı rengi
-                            ),
-                          ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              _userName != null ? 'Hoşgeldin, $_userName!' : 'Hoşgeldiniz',
+              style: const TextStyle(fontSize: 18, color: Colors.red),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const PagePadding.all(),
+              child: _isLoading
+                  ? const LinearProgressIndicator(
+                      color: ColorItems.project_blue,
+                    )
+                  : _categories.isEmpty
+                      ? const Center(child: Text('Kategoriler bulunamadı.'))
+                      : ListView.builder(
+                          itemCount: _categories.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              color: ColorItems.project_white,
+                              child: ListTile(
+                                titleAlignment: ListTileTitleAlignment.center,
+                                trailing:
+                                    const Icon(Icons.chevron_right_outlined),
+                                leading: const Icon(
+                                  Icons.auto_awesome_outlined,
+                                  color: ColorItems.project_orange,
+                                ),
+                                title: Text(
+                                  _categories[index],
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  '${_categories[index]} hakkında yapay zeka tarafından sunulan sınırsız bilgi için sadece tıkla.',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: ColorItems.project_gray,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
+            ),
+          ),
+        ],
       ),
     );
   }
-
-  Future<void> _signOut() async {
-    await _authService.signOut(); // Çıkış işlemi
-
-    // Çıkış sonrası giriş sayfasına yönlendirme
-    navigateReplacementTo(context, const WelcomePage());
-  }
 }
-
-
-
-
-/*
-Card(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 8,
-                        horizontal: 16,
-                      ),
-                      elevation: 4, // Kartın gölgesini ayarlamak için
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          10,
-                        ), // Kart köşelerini yuvarlatmak için
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(
-                          16,
-                        ), // Kart içindeki boşluğu ayarlamak için
-                        child: Text(
-                          _categories[index], // Kategori adını gösterir
-                          style: const TextStyle(
-                            fontSize: 18, // Yazı boyutunu ayarlamak için
-                            fontWeight: FontWeight.bold, // Yazı kalınlığı
-                            color: Colors.black, // Yazı rengi
-                          ),
-                        ),
-                      ),
-                    );
-
-*/
