@@ -1,6 +1,8 @@
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/core/enums/image_enum.dart';
 import 'package:edumix/product/services/category_service.dart';
+import 'package:edumix/product/widgets/bottom_nav_bar.dart';
 import 'package:edumix/product/widgets/custom_loading_vidget.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,11 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ara'),
+        title: const Text(ProjectText.appName),
+        leading: Padding(
+          padding: const PagePadding.all(),
+          child: ImageEnums.logo.toImage,
+        ),
       ),
       body: Padding(
         padding: const PagePadding.all(),
@@ -135,6 +141,9 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: const CustomBottomNavigationBar(
+        selectedIndex: 1,
       ),
     );
   }

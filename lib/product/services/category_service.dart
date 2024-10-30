@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class CategoryService {
   // Firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final CollectionReference _categoriesRef =
-      FirebaseFirestore.instance.collection('Categories');
 
   //! Kategorileri karisik çekme
   Future<List<String>> fetchCategories() async {
@@ -65,7 +63,8 @@ class CategoryService {
     final lowerCaseQuery = query.toLowerCase();
 
     // Tüm kategorileri çek
-    final querySnapshot = await _categoriesRef.get();
+    final QuerySnapshot querySnapshot =
+        await _firestore.collection('Categories').orderBy('name').get();
 
     // Sonuçları küçük harf duyarlılığı olmadan filtreleyerek döndür
     return querySnapshot.docs
