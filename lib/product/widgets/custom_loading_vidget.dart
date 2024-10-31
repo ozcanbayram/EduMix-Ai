@@ -22,3 +22,29 @@ class CustomLoadingWidget extends StatelessWidget {
     );
   }
 }
+
+class LoadingIndicator extends StatelessWidget {
+  const LoadingIndicator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CustomLoadingWidget());
+  }
+}
+
+class SearchIndicator extends StatelessWidget {
+  const SearchIndicator({
+    super.key,
+  });
+  static const searchAnimationUrl =
+      'https://lottie.host/c4bb20e8-5175-4d59-bd3e-9fc2c3ba6941/RoAOEbKWZh.json';
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Lottie.network(
+        searchAnimationUrl,
+      ),
+    );
+  }
+}

@@ -108,3 +108,23 @@ class CustomNameField extends StatelessWidget {
     );
   }
 }
+
+class SearchTextField extends StatelessWidget {
+  const SearchTextField({required this.onSearch});
+  final ValueChanged<String> onSearch;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      cursorColor: ColorItems.project_blue,
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: ColorItems.project_text_color,
+          ),
+      onChanged: onSearch,
+      decoration: const InputDecoration(
+        labelText: ProjectText.searchText,
+        prefixIcon: Icon(Icons.search),
+      ),
+    );
+  }
+}
