@@ -6,6 +6,7 @@ import 'package:edumix/product/widgets/bottom_nav_bar.dart';
 import 'package:edumix/product/widgets/custom_loading_vidget.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class CategorySearchPage extends StatefulWidget {
   const CategorySearchPage({super.key});
@@ -25,11 +26,11 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
       _isLoading = true;
     });
 
-    // Küçük harfe dönüştürülmüş sorgu ile arama yap
+    // Küçük harfe dönüştürülmüş sorgu ile arama 
     final results =
         await _categoryService.searchCategories(query.toLowerCase());
 
-    // Tam eşleşenleri önce getir, ardından diğer eşleşenleri ekle
+    // Tam eşleşenleri önce getir ardından diğer eşleşenleri ekle
     results.sort((a, b) {
       final aName = a['name']?.toString().toLowerCase() ?? '';
       final bName = b['name']?.toString().toLowerCase() ?? '';
@@ -68,38 +69,14 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
           children: [
             TextField(
               cursorColor: ColorItems.project_blue,
-              style: const TextStyle(
-                color: ColorItems.project_second_text_color,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(color: ColorItems.project_text_color),
               onChanged: _onSearch,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: ColorItems.project_white,
+              decoration: const InputDecoration(
                 labelText: ProjectText.searchText,
-                labelStyle: const TextStyle(
-                  color: ColorItems.project_text_color,
-                  fontWeight: FontWeight.w500,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(
-                    color: ColorItems.project_second_text_color,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(
-                    color: ColorItems.project_second_text_color,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(
-                    color: ColorItems.project_second_text_color,
-                  ),
-                ),
+                prefixIcon: Icon(Icons.search),
               ),
             ),
             const SizedBox(height: 16),
@@ -110,10 +87,9 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
                           SingleChildScrollView(child: CustomLoadingWidget()),
                     )
                   : _searchResults.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'Aramaya uygun kategori bulunamadı',
-                            style: TextStyle(color: Colors.red),
+                      ? Center(
+                          child: Lottie.network(
+                            'https://lottie.host/c4bb20e8-5175-4d59-bd3e-9fc2c3ba6941/RoAOEbKWZh.json',
                           ),
                         )
                       : ListView.builder(
@@ -142,9 +118,7 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomBottomNavigationBar(
-        selectedIndex: 1,
-      ),
+      bottomNavigationBar: const CustomBottomNavigationBar(selectedIndex: 1),
     );
   }
 }

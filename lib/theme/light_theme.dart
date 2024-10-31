@@ -62,4 +62,33 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     ),
     color: ColorItems.project_white,
   ),
+
+  // INPUT DECORATION THEME
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: ColorItems.project_white,
+    labelStyle: const TextStyle(
+      color: ColorItems.project_text_color,
+      fontWeight: FontWeight.w500,
+    ),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(
+        color: ColorItems.project_second_text_color,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(
+        color: ColorItems.project_second_text_color,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: const BorderSide(
+        color: ColorItems.project_second_text_color,
+      ),
+    ),
+    prefixIconColor: ColorItems.project_text_color,
+  ),
 );

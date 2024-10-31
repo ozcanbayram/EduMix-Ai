@@ -38,30 +38,10 @@ class CustomPasswordField extends StatelessWidget {
         decoration: InputDecoration(
           suffixIcon: IconButton(onPressed: onPressed, icon: suffixIcon),
           prefixIcon: const Icon(Icons.lock),
-          filled: true,
-          fillColor: ColorItems.project_white,
           labelText: ProjectText.password,
           labelStyle: const TextStyle(
             color: ColorItems.project_text_color,
             fontWeight: FontWeight.w500,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
           ),
         ),
       ),
@@ -86,37 +66,13 @@ class CustomEmailField extends StatelessWidget {
           color: ColorItems.project_second_text_color,
           fontWeight: FontWeight.w500,
         ),
-        textInputAction: TextInputAction.next, //!
-        keyboardType: TextInputType.emailAddress, //!
+        textInputAction: TextInputAction.next,
+        keyboardType: TextInputType.emailAddress,
         controller: _nameController,
         cursorColor: ColorItems.project_blue,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.email),
-          filled: true,
-          fillColor: ColorItems.project_white,
+        decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.email),
           labelText: ProjectText.email,
-          labelStyle: const TextStyle(
-            color: ColorItems.project_text_color,
-            fontWeight: FontWeight.w500,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
-          ),
         ),
       ),
     );
@@ -140,37 +96,13 @@ class CustomNameField extends StatelessWidget {
           color: ColorItems.project_second_text_color,
           fontWeight: FontWeight.w500,
         ),
-        textInputAction: TextInputAction.next, //!
-        keyboardType: TextInputType.emailAddress, //!
+        textInputAction: TextInputAction.next,
+        keyboardType: TextInputType.emailAddress,
         controller: _nameController,
         cursorColor: ColorItems.project_blue,
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.person),
-          filled: true,
-          fillColor: ColorItems.project_white,
+        decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.person),
           labelText: ProjectText.name,
-          labelStyle: const TextStyle(
-            color: ColorItems.project_text_color,
-            fontWeight: FontWeight.w500,
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(
-              color: ColorItems.project_second_text_color,
-            ),
-          ),
         ),
       ),
     );
