@@ -25,7 +25,7 @@ class CategoryCard extends StatelessWidget {
         onTap: () {
           navigateWithParameter(
             context,
-            (param) => CategoryDetailPage(category: param),
+            (param) => TitleGeneratorView(category: param),
             category['name'].toString(),
           );
         },

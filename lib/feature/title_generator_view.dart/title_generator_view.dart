@@ -1,16 +1,16 @@
-import 'package:edumix/feature/title_generator_view.dart/article_page.dart';
+import 'package:edumix/feature/information_page.dart/information_page_view.dart';
 import 'package:edumix/product/services/ai_service.dart'; // titleGeneratorAi metodunu içeren dosya
 import 'package:flutter/material.dart';
 
-class CategoryDetailPage extends StatefulWidget {
-  const CategoryDetailPage({required this.category, super.key});
+class TitleGeneratorView extends StatefulWidget {
+  const TitleGeneratorView({required this.category, super.key});
   final String category;
 
   @override
-  State<CategoryDetailPage> createState() => _CategoryDetailPageState();
+  State<TitleGeneratorView> createState() => _CategoryDetailPageState();
 }
 
-class _CategoryDetailPageState extends State<CategoryDetailPage> {
+class _CategoryDetailPageState extends State<TitleGeneratorView> {
   late String _currentTitle; // API'den gelen başlık
   bool _isLoading = true;
 
@@ -74,7 +74,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
                               // ignore: inference_failure_on_instance_creation
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    ArticlePage(title: _currentTitle),
+                                    InformationView(title: _currentTitle),
                               ),
                             );
                           },

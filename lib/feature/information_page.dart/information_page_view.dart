@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart'; // Google Gemini paketini ekleyin
 
-class ArticlePage extends StatefulWidget {
-  const ArticlePage({required this.title, super.key});
+class InformationView extends StatefulWidget {
+  const InformationView({required this.title, super.key});
   final String title;
 
   @override
-  State<ArticlePage> createState() => _ArticlePageState();
+  State<InformationView> createState() => _ArticlePageState();
 }
 
-class _ArticlePageState extends State<ArticlePage> {
+class _ArticlePageState extends State<InformationView> {
   late String _articleContent; // API'den gelecek içerik
   bool _isLoading = true; // Yükleme durumu
 

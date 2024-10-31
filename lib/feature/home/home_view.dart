@@ -124,7 +124,7 @@ class CategoriesListView extends StatelessWidget {
             onTap: () {
               navigateWithParameter(
                 context,
-                (param) => CategoryDetailPage(category: param),
+                (param) => TitleGeneratorView(category: param),
                 _categories[index],
               );
             },
