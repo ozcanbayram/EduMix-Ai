@@ -1,5 +1,7 @@
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/feature/title_generator_view.dart/title_generator_view.dart';
+import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/widgets/custom_loading_vidget.dart';
 import 'package:flutter/material.dart';
 
@@ -20,15 +22,21 @@ class CategoryCard extends StatelessWidget {
           '${category['name']?.toString() ?? ''} ${ProjectText.subtitleDescription}',
         ),
         trailing: const Icon(Icons.chevron_right),
+        onTap: () {
+          navigateWithParameter(
+            context,
+            (param) => CategoryDetailPage(category: param),
+            category['name'].toString(),
+          );
+        },
       ),
     );
   }
 }
 
-
 // arama sonuclari
 class ResultList extends StatelessWidget {
-  const ResultList(this.results);
+  const ResultList(this.results, {super.key});
   final List<Map<String, dynamic>> results;
 
   @override

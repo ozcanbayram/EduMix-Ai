@@ -1,6 +1,7 @@
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/enums/image_enum.dart';
+import 'package:edumix/feature/title_generator_view.dart/title_generator_view.dart';
 import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/services/auth_service.dart';
@@ -120,6 +121,13 @@ class CategoriesListView extends StatelessWidget {
             subtitle: Text(
               '${_categories[index]} ${ProjectText.subtitleDescription}',
             ),
+            onTap: () {
+              navigateWithParameter(
+                context,
+                (param) => CategoryDetailPage(category: param),
+                _categories[index],
+              );
+            },
           ),
         );
       },

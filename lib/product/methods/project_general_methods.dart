@@ -43,3 +43,18 @@ void navigateUntil(BuildContext context, Widget page) {
     return route.settings.name == page.runtimeType.toString();
   });
 }
+
+//* parametre ile yönlendir
+void navigateWithParameter(
+  BuildContext context,
+  Widget Function(String) pageBuilder,
+  String parameter,
+) {
+  Navigator.push(
+    context,
+    // ignore: inference_failure_on_instance_creation
+    MaterialPageRoute(
+      builder: (context) => pageBuilder(parameter),
+    ),
+  );
+}
