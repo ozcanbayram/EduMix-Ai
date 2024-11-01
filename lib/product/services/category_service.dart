@@ -20,10 +20,8 @@ class CategoryService {
       // Kategori isimlerini döndürüyoruz
       return categories;
     } catch (e) {
-      // Hata durumunda hata mesajını yazdırıyoruz
-      print(
-        'Kategorileri çekerken hata oluştu: $e',
-      );
+      // Hata durumunda hata mesajı
+      // print('Kategorileri çekerken hata oluştu: $e',);
       // Boş bir liste döndürüyoruz
       return [];
     }
@@ -43,7 +41,7 @@ class CategoryService {
           snapshot.docs.map((doc) => doc['name'] as String).toList();
 
       // Verilerin başarıyla çekildiğini belirten bir mesaj
-      print('Veriler GELİYOR: $categories');
+      // print('Veriler GELİYOR: $categories');
 
       // Kategori isimlerini döndürüyoruz
       return categories;

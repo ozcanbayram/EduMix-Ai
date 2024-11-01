@@ -1,5 +1,11 @@
+import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:edumix/feature/information_page.dart/information_page_view.dart';
-import 'package:edumix/product/services/ai_service.dart'; // titleGeneratorAi metodunu içeren dosya
+import 'package:edumix/product/methods/project_general_methods.dart';
+import 'package:edumix/product/services/ai_service.dart';
+import 'package:edumix/product/widgets/button_large.dart';
+import 'package:edumix/product/widgets/custom_loading_vidget.dart';
+import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
 
 class TitleGeneratorView extends StatefulWidget {
@@ -7,83 +13,116 @@ class TitleGeneratorView extends StatefulWidget {
   final String category;
 
   @override
-  State<TitleGeneratorView> createState() => _CategoryDetailPageState();
+  State<TitleGeneratorView> createState() => _TitleGeneratorViewState();
 }
 
-class _CategoryDetailPageState extends State<TitleGeneratorView> {
-  late String _currentTitle; // API'den gelen başlık
+class _TitleGeneratorViewState extends State<TitleGeneratorView> {
+  late String _currentTitle;
+  late String _fullContent;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _fetchCategoryTitle(); // Başlığı yüklemek için çağırıyoruz
+    _generateTitleAndContent();
   }
 
-  Future<void> _fetchCategoryTitle() async {
+  Future<void> _generateTitleAndContent() async {
     setState(() => _isLoading = true);
 
-    // Yapay zeka metodunu kullanarak başlık al
-    final title =
-        await titleGeneratorAi(widget.category); // Burada metodu kullanıyoruz
-
-    print(title);
+    final title = await titleGeneratorAi(widget.category);
+    final content = await informationCreator(title ?? '');
 
     setState(() {
-      _currentTitle = title ??
-          'Başlık Üretilirken Hata Oluştu'; // Hata durumunda varsayılan metin
+      _currentTitle = title ?? 'Başlık Üretilirken Hata Oluştu';
+      _fullContent = content ?? 'İçerik üretilemedi';
       _isLoading = false;
     });
   }
 
-  // Başlığı yeniden oluşturma metodu
-  Future<void> _refreshTitle() async {
-    await _fetchCategoryTitle();
+  Future<void> _refreshTitleAndContent() async {
+    await _generateTitleAndContent();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.category),
+        title: const Text(ProjectText.appName),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : GestureDetector(
-              onHorizontalDragEnd: (_) =>
-                  _refreshTitle(), // Card'ı kaydırınca başlığı değiştir
-              child: Center(
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          _currentTitle,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge!
-                              .copyWith(color: Colors.red),
+          ? const Center(child: CustomLoadingWidget())
+          : Padding(
+              padding: const PagePadding.all(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: SingleChildScrollView(
+                      child: Card(
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 152, 211, 247),
+                                Colors.white,
+                              ], // Renk geçişleri
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const PagePadding.all(),
+                            child: Column(
+                              children: [
+                                Text(
+                                  _currentTitle,
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: WidgetSizes.largeTextSize,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  _fullContent,
+                                  style: const TextStyle(
+                                    fontSize: WidgetSizes.mediumTextSize,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  maxLines: 20,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              // ignore: inference_failure_on_instance_creation
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    InformationView(title: _currentTitle),
-                              ),
-                            );
-                          },
-                          child: const Text('Bu Konuyu Oku'),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+
+                  // Butonlar
+                  Column(
+                    children: [
+                      ButtonLarge(
+                        onPressed: () {
+                          navigateTo(
+                            context,
+                            InformationView(
+                              title: _currentTitle,
+                              content: _fullContent,
+                            ),
+                          );
+                        },
+                        buttonsText: ProjectText.readThisAbout,
+                      ),
+                      ButtonLarge(
+                        onPressed: _refreshTitleAndContent,
+                        buttonsText: 'Başka Konu Öner',
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
     );

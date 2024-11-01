@@ -1,5 +1,6 @@
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/feature/home/home_view.dart';
+import 'package:edumix/feature/save/saved_item_screen.dart';
 import 'package:edumix/feature/search/search_view.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
@@ -38,11 +39,11 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           onTabChange: (value) {
             switch (value) {
               case 0:
-                navigateTo(context, const HomeView());
+                navigateReplacementTo(context, const HomeView());
               case 1:
-                navigateTo(context, const CategorySearchPage());
+                navigateReplacementTo(context, const CategorySearchPage());
               case 2:
-              // navigateReplacementTo(context, const CategorySearchPage());
+                navigateReplacementTo(context, const SavedItemsScreen());
             }
           },
           tabs: const [

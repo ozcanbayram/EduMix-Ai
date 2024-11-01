@@ -27,6 +27,27 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       fontWeight: FontWeight.bold,
       color: ColorItems.project_second_text_color,
     ),
+    bodyLarge: TextStyle(
+      color: ColorItems.project_second_text_color,
+      fontWeight: FontWeight.w400,
+    ),
+    bodyMedium: TextStyle(color: ColorItems.project_second_text_color),
+    bodySmall: TextStyle(color: ColorItems.project_second_text_color),
+    displayLarge: TextStyle(color: ColorItems.project_second_text_color),
+    displayMedium: TextStyle(
+      color: ColorItems.project_second_text_color,
+      fontWeight: FontWeight.bold,
+    ),
+    displaySmall: TextStyle(color: ColorItems.project_second_text_color),
+    headlineLarge: TextStyle(
+      color: ColorItems.project_second_text_color,
+      fontWeight: FontWeight.bold,
+    ),
+    headlineMedium: TextStyle(
+      color: ColorItems.project_second_text_color,
+      fontWeight: FontWeight.w500,
+    ),
+    headlineSmall: TextStyle(color: ColorItems.project_second_text_color),
   ),
 
   //ELEVATED BUTTON THEME

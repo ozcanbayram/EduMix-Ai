@@ -129,4 +129,22 @@ class AuthService {
 
     //  String? _userName;
   }
+
+  // kaydedilenleri çekme:
+  Future<List<Map<String, dynamic>>> _fetchSavedItems() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return []; // Kullanıcı giriş yapmamışsa boş liste döndür
+    }
+
+    final savedItemsSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('saved')
+        .get();
+
+    return savedItemsSnapshot.docs
+        .map((doc) => doc.data() as Map<String, dynamic>)
+        .toList();
+  }
 }

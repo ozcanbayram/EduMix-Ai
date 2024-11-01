@@ -32,7 +32,7 @@ Future<String?> informationCreator(String title) async {
   final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
   final content = [
     Content.text(
-      '$title konusu ile ilgili bilgi içeren bir metin üret,  İçeriklerin sıkıcı olmamasına, okurken kullanıcıyı sıkmamaya özen göstererek metin içerikleri yarat. siçeriğin içinde #,* gibi herhangi bir işaret olmasın, sadeec yazılar olsun..',
+      '$title konusu ile ilgili bilgi içeren bir metin üret,  İçeriklerin sıkıcı olmamasına, okurken kullanıcıyı sıkmamaya özen göstererek metin içerikleri yarat. içeriğin içinde #,* gibi herhangi bir karakterler olmasın, sadeec yazılar olsun.',
     ),
   ];
   final response = await model.generateContent(content);

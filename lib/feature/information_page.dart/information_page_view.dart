@@ -1,77 +1,100 @@
-// article_page.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edumix/core/constants/color_items.dart';
+import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:google_generative_ai/google_generative_ai.dart'; // Google Gemini paketini ekleyin
+// import 'package:share_plus/share_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class InformationView extends StatefulWidget {
-  const InformationView({required this.title, super.key});
+class InformationView extends StatelessWidget {
+  const InformationView({
+    required this.title,
+    required this.content,
+    super.key,
+  });
   final String title;
+  final String content;
 
-  @override
-  State<InformationView> createState() => _ArticlePageState();
-}
+  // Future<void> _shareContent(BuildContext context) async {
+  //   // Paylaşılacak içeriği ayarla
+  //   final String message = '$title\n\n$content';
 
-class _ArticlePageState extends State<InformationView> {
-  late String _articleContent; // API'den gelecek içerik
-  bool _isLoading = true; // Yükleme durumu
+  //   // İçeriği paylaş
+  //   await Share.share(message);
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchArticleContent(); // İçeriği yüklemek için çağırıyoruz
-  }
+  Future<void> _likeContent() async {
+    // Mevcut kullanıcıyı al
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Firestore referansını oluştur
+      final firestore = FirebaseFirestore.instance;
 
-  Future<void> _fetchArticleContent() async {
-    final content = await informationCreator(
-      widget.title,
-    ); // Bilgi oluşturma metodunu çağır
-    setState(() {
-      _articleContent =
-          content ?? 'İçerik oluşturulamadı'; // Gelen içeriği güncelle
-      _isLoading = false; // Yükleme durumu güncelleniyor
-    });
+      // Kullanıcının 'saved' koleksiyonuna verileri ekle
+      await firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('saved')
+          .add({
+        'title': title,
+        'content': content,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text(ProjectText.appName),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: _isLoading
-            ? const Center(
-                child: CircularProgressIndicator(),
-              ) // Yükleme göstergesi
-            : SingleChildScrollView(
-                child: Text(
-                  _articleContent,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: ColorItems.project_text_color),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: WidgetSizes.largeTextSize,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
+              Text(
+                content,
+                style: const TextStyle(
+                  fontSize: WidgetSizes.mediumTextSize,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: ColorItems.project_scaffold_color,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            label: 'Paylaş',
+            icon: Icon(Icons.share),
+          ),
+          BottomNavigationBarItem(
+            label: 'Beğen',
+            icon: Icon(Icons.favorite),
+          ),
+        ],
+        onTap: (index) {
+          if (index == 0) {
+            // _shareContent(context); // Paylaş butonuna basıldığında
+          } else if (index == 1) {
+            _likeContent(); // Beğen butonuna basıldığında
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Beğenildi!')),
+            );
+          }
+        },
       ),
     );
-  }
-
-  // Bilgi üreten metot
-  Future<String?> informationCreator(String title) async {
-    final apiKey = dotenv.env['GOOGLE_GEMINI_API_KEY'];
-    if (apiKey == null) {
-      print(r'$GOOGLE_GEMINI_API_KEY ortam değişkeni yok! ***');
-      return null; // Hata durumunda null döndür
-    }
-    final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
-    final content = [
-      Content.text(
-        '$title konusu ile ilgili bilgi içeren bir metin üret. İçeriklerin sıkıcı olmamasına, okurken kullanıcıyı sıkmamaya özen göstererek metin içerikleri yarat. Başlığın başında #,* gibi herhangi bir işaret olmasın.',
-      ),
-    ];
-    final response = await model.generateContent(content);
-    return response.text; // Yanıtı döndürüyoruz
   }
 }

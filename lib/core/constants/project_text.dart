@@ -55,4 +55,7 @@ class ProjectText {
 
   //! Search Screen Text:
   static const searchText = 'Kategori ara';
+
+//! Title GeneratorPage:
+  static const readThisAbout = 'Yazının Devamını Oku';
 }
