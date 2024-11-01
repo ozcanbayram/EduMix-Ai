@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:edumix/product/widgets/bottom_nav_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
+import 'package:edumix/core/enums/image_enum.dart';
+import 'package:edumix/product/widgets/bottom_nav_bar.dart';
+import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class SavedItemsScreen extends StatelessWidget {
   const SavedItemsScreen({super.key});
@@ -46,7 +47,7 @@ class SavedItemsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          item['title'] ?? 'Başlık yok',
+                          item['title'].toString(),
                           style: const TextStyle(
                             fontSize: WidgetSizes.largeTextSize,
                             fontWeight: FontWeight.bold,
@@ -54,7 +55,7 @@ class SavedItemsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          item['content'] ?? 'İçerik yok',
+                          item['content'].toString(),
                           style: const TextStyle(
                             fontSize: WidgetSizes.mediumTextSize,
                             fontWeight: FontWeight.w500,
@@ -87,8 +88,6 @@ class SavedItemsScreen extends StatelessWidget {
         .collection('saved')
         .get();
 
-    return savedItemsSnapshot.docs
-        .map((doc) => doc.data() as Map<String, dynamic>)
-        .toList();
+    return savedItemsSnapshot.docs.map((doc) => doc.data()).toList();
   }
 }
