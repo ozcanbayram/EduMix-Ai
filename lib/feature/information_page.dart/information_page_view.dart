@@ -25,7 +25,7 @@ class InformationView extends StatelessWidget {
 
   Future<void> _likeContent() async {
     // Mevcut kullanıcıyı al
-    User? user = FirebaseAuth.instance.currentUser;
+    final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // Firestore referansını oluştur
       final firestore = FirebaseFirestore.instance;

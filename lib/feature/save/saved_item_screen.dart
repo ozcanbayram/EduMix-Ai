@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:edumix/core/enums/image_enum.dart';
+import 'package:edumix/feature/information_page.dart/information_page_view.dart';
+import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/widgets/bottom_nav_bar.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,28 +43,32 @@ class SavedItemsScreen extends StatelessWidget {
                 final item = savedItems[index];
                 return Card(
                   margin: const EdgeInsets.symmetric(vertical: 8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item['title'].toString(),
-                          style: const TextStyle(
-                            fontSize: WidgetSizes.largeTextSize,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          item['content'].toString(),
-                          style: const TextStyle(
-                            fontSize: WidgetSizes.mediumTextSize,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
+                  child: ListTile(
+                    title: Text(
+                      item['title'].toString(),
+                      style: const TextStyle(
+                        fontSize: WidgetSizes.largeTextSize,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    subtitle: Text(
+                      item['content'].toString(),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: WidgetSizes.mediumTextSize,
+                      ),
+                    ),
+                    // trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      navigateTo(
+                        context,
+                        InformationView(
+                          title: item['title'].toString(),
+                          content: item['content'].toString(),
+                        ),
+                      );
+                    },
                   ),
                 );
               },
