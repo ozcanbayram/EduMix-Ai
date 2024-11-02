@@ -1,73 +1,96 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edumix/core/constants/color_items.dart';
-import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:edumix/product/services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class InformationView extends StatefulWidget {
   const InformationView({
     required this.title,
     required this.content,
+    required this.isLiked,
     super.key,
   });
 
   final String title;
   final String content;
+  final bool isLiked;
 
   @override
   State<InformationView> createState() => _InformationViewState();
 }
 
 class _InformationViewState extends State<InformationView> {
+  late bool isLiked;
   final AuthService _authService = AuthService();
-  bool isLiked = false;
-  String? documentId;
 
   @override
   void initState() {
     super.initState();
-    _checkIfLiked();
+    isLiked = widget.isLiked;
   }
 
-  Future<void> _checkIfLiked() async {
-    isLiked = await _authService.checkIfLiked(widget.title, widget.content);
-    setState(() {});
+  Future<void> _deleteSavedItem(String itemId) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Firebase'deki kaydedilen öğeyi sil
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('saved')
+          .doc(itemId)
+          .delete();
+    }
   }
 
-  Future<void> _likeContent() async {
-    final id = await _authService.removeLike(widget.title, widget.content);
-    setState(() {
-      isLiked = true;
-      documentId = id; // Yeni documentId'yi kaydet
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Beğenildi!')),
-    );
-  }
+  Future<void> _toggleLike() async {
+    if (isLiked) {
+      // İçeriği beğenilerden kaldır
+      final savedItems = await _authService.fetchSavedItems();
+      final documentId = savedItems.firstWhere(
+        (item) =>
+            item['title'] == widget.title && item['content'] == widget.content,
+        orElse: () => {}, // Varsayılan değer
+      )['id'];
 
-  Future<void> _unlikeContent() async {
-    if (documentId != null) {
-      await _authService.unlikeContent(documentId!);
-      setState(() {
-        isLiked = false;
-        documentId = null; // documentId'yi sıfırla
-      });
+      if (documentId != null) {
+        await _authService.unlikeContent(documentId.toString());
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('İçerik beğenilerden kaldırıldı!')),
+        );
+      }
+    } else {
+      // İçeriği beğen
+      await _authService.likeContent(widget.title, widget.content);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Beğenilerden kaldırıldı!')),
+        const SnackBar(content: Text('İçerik beğenildi!')),
       );
     }
+
+    setState(() {
+      isLiked = !isLiked; // Butona tıklandığında beğeni durumunu değiştir
+    });
+  }
+
+  void _shareContent() {
+    // Paylaşma işlemi burada yapılacak.
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('İçerik paylaşıldı!')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(ProjectText.appName),
+        title: const Text('Detaylar'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 widget.title,
@@ -76,42 +99,39 @@ class _InformationViewState extends State<InformationView> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 10),
               Text(
                 widget.content,
                 style: const TextStyle(
                   fontSize: WidgetSizes.mediumTextSize,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: ColorItems.project_scaffold_color,
-        items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            label: 'Paylaş',
-            icon: Icon(Icons.share),
-          ),
-          BottomNavigationBarItem(
-            label: isLiked ? 'Beğenilerden Kaldır' : 'Beğen',
-            icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border),
-          ),
-        ],
-        onTap: (index) {
-          if (index == 0) {
-            // Paylaş butonuna basıldığında
-            // _shareContent(context);
-          } else if (index == 1) {
-            if (isLiked) {
-              _unlikeContent(); // Beğenilerden Kaldır işlemi
-            } else {
-              _likeContent(); // Beğen işlemi
-            }
-          }
-        },
+      bottomNavigationBar: BottomAppBar(
+        color: ColorItems.project_scaffold_color,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border),
+              onPressed: _toggleLike,
+              color: isLiked ? Colors.red : null,
+            ),
+            IconButton(
+              icon: const Icon(Icons.share),
+              onPressed: _shareContent,
+            ),
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                Navigator.pop(context); // Ana sayfaya yönlendirme
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

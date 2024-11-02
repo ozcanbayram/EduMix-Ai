@@ -111,6 +111,7 @@ class _TitleGeneratorViewState extends State<TitleGeneratorView> {
                             InformationView(
                               title: _currentTitle,
                               content: _fullContent,
+                              isLiked: false, // Beğenildi olarak ayarlanıyor
                             ),
                           );
                         },

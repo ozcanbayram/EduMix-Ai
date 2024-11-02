@@ -91,6 +91,7 @@ class _SavedItemsScreenState extends State<SavedItemsScreen> {
                         InformationView(
                           title: item['title'].toString(),
                           content: item['content'].toString(),
+                          isLiked: true, // Beğenildi olarak ayarlanıyor
                         ),
                       );
                     },
