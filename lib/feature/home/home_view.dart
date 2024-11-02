@@ -1,6 +1,5 @@
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
-import 'package:edumix/core/enums/image_enum.dart';
 import 'package:edumix/feature/title_generator_view.dart/title_generator_view.dart';
 import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
@@ -8,6 +7,7 @@ import 'package:edumix/product/services/auth_service.dart';
 import 'package:edumix/product/services/category_service.dart';
 import 'package:edumix/product/widgets/bottom_nav_bar.dart';
 import 'package:edumix/product/widgets/custom_loading_vidget.dart';
+import 'package:edumix/product/widgets/main_app_bar.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:flutter/material.dart';
 
@@ -33,19 +33,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const PagePadding.all(),
-          child: ImageEnums.logo.toImage,
-        ),
-        title: const Text(ProjectText.appName),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout_outlined),
-            onPressed: _signOut,
-          ),
-        ],
-      ),
+      appBar: MainAppBar(onLogout: _signOut),
       body: Column(
         children: [
           Expanded(
@@ -91,7 +79,7 @@ class _HomeViewState extends State<HomeView> {
     // ignore: use_build_context_synchronously
     navigateReplacementTo(context, const WelcomePage());
     // ignore: use_build_context_synchronously
-    showCustomSnackBar(context, ProjectText.signedOuut);
+    showCustomSnackBar(context, ProjectText.signedOut);
   }
 }
 

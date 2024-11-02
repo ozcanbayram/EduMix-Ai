@@ -34,46 +34,6 @@ class _InformationViewState extends State<InformationView> {
     isLiked = widget.isLiked;
   }
 
-  Future<void> _toggleLike() async {
-    if (isLiked) {
-      showCustomSnackBar(context, 'İçerik Zaten Beğenildi');
-    } else {
-      await _authService.likeContent(widget.title, widget.content);
-      showCustomSnackBar(context, 'İçerik Beğenildi');
-      setState(() => isLiked = true);
-    }
-  }
-
-  Future<void> _copyContent() async {
-    final textToCopy = '${widget.title}\n\n${widget.content}';
-    await Clipboard.setData(ClipboardData(text: textToCopy));
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('İçerik kopyalandı!')),
-    );
-  }
-
-  void _toggleDarkMode() {
-    setState(() {
-      isDarkMode = !isDarkMode;
-      // System UI overlay style güncellemesi
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarColor: isDarkMode
-              ? ColorItems.project_black
-              : ColorItems.project_scaffold_color,
-          statusBarIconBrightness:
-              isDarkMode ? Brightness.light : Brightness.dark,
-          systemNavigationBarColor: isDarkMode
-              ? ColorItems.project_black
-              : ColorItems.project_scaffold_color,
-          systemNavigationBarIconBrightness:
-              isDarkMode ? Brightness.light : Brightness.dark,
-        ),
-      );
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final appBarColor = isDarkMode
@@ -99,15 +59,17 @@ class _InformationViewState extends State<InformationView> {
               Text(
                 widget.title,
                 style: TextStyle(
-                    fontSize: WidgetSizes.largeTextSize,
-                    fontWeight: FontWeight.bold,
-                    color: textColor),
+                  fontSize: WidgetSizes.largeTextSize,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
               ),
-              const SizedBox(height: 10),
               Text(
                 widget.content,
                 style: TextStyle(
-                    fontSize: WidgetSizes.mediumTextSize, color: textColor),
+                  fontSize: WidgetSizes.mediumTextSize,
+                  color: textColor,
+                ),
               ),
             ],
           ),
@@ -128,7 +90,8 @@ class _InformationViewState extends State<InformationView> {
             IconButton(
               icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border),
               onPressed: _toggleLike,
-              color: isLiked ? Colors.red : null,
+              color:
+                  isLiked ? ColorItems.project_orange : ColorItems.project_gray,
             ),
             IconButton(
               icon: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
@@ -141,5 +104,49 @@ class _InformationViewState extends State<InformationView> {
         ),
       ),
     );
+  }
+
+  //! Metotlar
+
+  Future<void> _toggleLike() async {
+    if (isLiked) {
+      showCustomSnackBar(context, 'İçerik Zaten Beğenildi');
+    } else {
+      await _authService.likeContent(widget.title, widget.content);
+      // ignore: use_build_context_synchronously
+      showCustomSnackBar(context, 'İçerik Beğenildi');
+      setState(() => isLiked = true);
+    }
+  }
+
+  Future<void> _copyContent() async {
+    final textToCopy = '${widget.title}\n\n${widget.content}';
+    await Clipboard.setData(ClipboardData(text: textToCopy));
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('İçerik kopyalandı!')),
+    );
+  }
+
+  void _toggleDarkMode() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+      // System UI overlay style güncellemesi
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarColor: isDarkMode
+              ? ColorItems.project_black
+              : ColorItems.project_scaffold_color,
+          statusBarIconBrightness:
+              isDarkMode ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: isDarkMode
+              ? ColorItems.project_black
+              : ColorItems.project_scaffold_color,
+          systemNavigationBarIconBrightness:
+              isDarkMode ? Brightness.light : Brightness.dark,
+        ),
+      );
+    });
   }
 }

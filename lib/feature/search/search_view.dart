@@ -1,9 +1,12 @@
 import 'package:edumix/core/constants/project_text.dart';
-import 'package:edumix/core/enums/image_enum.dart';
+import 'package:edumix/feature/welcome/welcome_view.dart';
+import 'package:edumix/product/methods/project_general_methods.dart';
+import 'package:edumix/product/services/auth_service.dart';
 import 'package:edumix/product/services/category_service.dart';
 import 'package:edumix/product/widgets/bottom_nav_bar.dart';
 import 'package:edumix/product/widgets/custom_loading_vidget.dart';
 import 'package:edumix/product/widgets/custom_text_field.dart';
+import 'package:edumix/product/widgets/main_app_bar.dart';
 import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:edumix/product/widgets/search_view_widgets.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +15,6 @@ class CategorySearchPage extends StatefulWidget {
   const CategorySearchPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _CategorySearchPageState createState() => _CategorySearchPageState();
 }
 
@@ -20,17 +22,12 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
   final CategoryService _categoryService = CategoryService();
   List<Map<String, dynamic>> _searchResults = [];
   bool _isLoading = false;
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(ProjectText.appName),
-        leading: Padding(
-          padding: const PagePadding.all(),
-          child: ImageEnums.logo.toImage,
-        ),
-      ),
+      appBar: MainAppBar(onLogout: _signOut),
       body: Padding(
         padding: const PagePadding.all(),
         child: Column(
@@ -48,18 +45,15 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
     );
   }
 
-  //! Metodlar :
-
-  //arama metodu
+  // Arama metodu
   Future<void> _onSearch(String query) async {
-    setState(() => _isLoading = true);
+    _setLoading(true);
 
     final results =
         await _categoryService.searchCategories(query.toLowerCase());
-
     setState(() {
       _searchResults = _sortResults(results, query);
-      _isLoading = false;
+      _setLoading(false);
     });
   }
 
@@ -75,5 +69,17 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
       return aName.compareTo(bName);
     });
     return results;
+  }
+
+  void _setLoading(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
+  }
+
+  Future<void> _signOut() async {
+    await _authService.signOut();
+    navigateReplacementTo(context, const WelcomePage());
+    showCustomSnackBar(context, ProjectText.signedOut);
   }
 }

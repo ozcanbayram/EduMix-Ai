@@ -22,7 +22,24 @@ void navigateTo(BuildContext context, Widget page) {
   Navigator.push(
     context,
     // ignore: inference_failure_on_instance_creation
-    MaterialPageRoute(builder: (context) => page),
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1, 0); // Sağdan gelme
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        // Animasyon değerleri
+        final tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    ),
   );
 }
 
@@ -31,7 +48,24 @@ void navigateReplacementTo(BuildContext context, Widget page) {
   Navigator.pushReplacement(
     context,
     // ignore: inference_failure_on_instance_creation
-    MaterialPageRoute(builder: (context) => page),
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0, 2); // Sağdan gelme
+        const end = Offset.zero;
+        const curve = Curves.easeInOutCirc;
+
+        // Animasyon değerleri
+        final tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+    ),
   );
 }
 
@@ -44,7 +78,6 @@ void navigateUntil(BuildContext context, Widget page) {
   });
 }
 
-//* parametre ile yönlendir
 void navigateWithParameter(
   BuildContext context,
   Widget Function(String) pageBuilder,
@@ -53,8 +86,24 @@ void navigateWithParameter(
   Navigator.push(
     context,
     // ignore: inference_failure_on_instance_creation
-    MaterialPageRoute(
-      builder: (context) => pageBuilder(parameter),
+    PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          pageBuilder(parameter),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1, 0); // Sağdan gelme
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+
+        // Animasyon değerleri
+        final tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
     ),
   );
 }

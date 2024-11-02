@@ -17,7 +17,7 @@ class CategoryService {
 
       // print('Veriler geliyor: $categories');
 
-      // Kategori isimlerini döndürüyoruz
+      // Kategori isimlerini dön
       return categories;
     } catch (e) {
       // Hata durumunda hata mesajı

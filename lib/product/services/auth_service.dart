@@ -23,16 +23,11 @@ class AuthService {
         'displayName': displayName,
       });
 
-      await _firestore
-          .collection('users')
-          .doc(userCredential.user!.uid)
-          .collection('saved')
-          .doc('initial')
-          .set({});
+      await _createInitialSavedCollection(userCredential.user!.uid);
 
       return userCredential.user;
     } catch (e) {
-      print(e);
+      print('Kayıt sırasında hata: $e');
       return null;
     }
   }
@@ -49,10 +44,7 @@ class AuthService {
       );
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
-      print('Hata: ${e.message}');
-      return null;
-    } catch (e) {
-      print('Beklenmedik bir hata: $e');
+      print('Giriş hatası: ${e.message}');
       return null;
     }
   }
@@ -62,39 +54,35 @@ class AuthService {
     try {
       await _auth.sendPasswordResetEmail(email: email);
       print('Parola sıfırlama e-postası gönderildi.');
-    } on FirebaseAuthException catch (e) {
-      print('Hata: ${e.message}');
+    } catch (e) {
+      print('Parola sıfırlama sırasında hata: $e');
     }
   }
 
   // Mevcut kullanıcıyı al
-  User? getCurrentUser() {
-    return _auth.currentUser;
-  }
+  User? getCurrentUser() => _auth.currentUser;
 
   // Kullanıcı çıkış işlemi
-  Future<void> signOut() async {
-    await _auth.signOut();
-  }
+  Future<void> signOut() async => _auth.signOut();
 
   // Kullanıcı adını Firestore'dan al
   Future<String?> getUserName() async {
     try {
-      final user = _auth.currentUser;
+      final user = getCurrentUser();
       if (user != null) {
         final userDoc =
             await _firestore.collection('users').doc(user.uid).get();
         return userDoc.data()?['displayName'] as String?;
       }
     } catch (e) {
-      print('Error fetching user name: $e');
+      print('Kullanıcı adı alınırken hata: $e');
     }
     return null;
   }
 
   // Kullanıcının beğenip beğenmediğini kontrol et
   Future<bool> checkIfLiked(String title, String content) async {
-    final user = _auth.currentUser;
+    final user = getCurrentUser();
     if (user != null) {
       final querySnapshot = await _firestore
           .collection('users')
@@ -111,7 +99,7 @@ class AuthService {
 
   // İçeriği beğen
   Future<void> likeContent(String title, String content) async {
-    final user = _auth.currentUser;
+    final user = getCurrentUser();
     if (user != null) {
       await _firestore
           .collection('users')
@@ -129,22 +117,25 @@ class AuthService {
   // İçeriği beğenilerden kaldır
   Future<void> unlikeContent(String documentId) async {
     try {
-      await FirebaseFirestore.instance
-          .collection('saved_items')
-          .doc(documentId)
-          .delete();
+      final user = getCurrentUser();
+      if (user != null) {
+        await _firestore
+            .collection('users')
+            .doc(user.uid)
+            .collection('saved')
+            .doc(documentId)
+            .delete();
+      }
     } catch (e) {
-      print('Error removing content: $e');
+      print('İçerik kaldırılırken hata: $e');
       rethrow; // Hata durumunu yukarı fırlat
     }
   }
 
   // Kaydedilenleri çek
   Future<List<Map<String, dynamic>>> fetchSavedItems() async {
-    final user = _auth.currentUser;
-    if (user == null) {
-      return [];
-    }
+    final user = getCurrentUser();
+    if (user == null) return [];
 
     final savedItemsSnapshot = await _firestore
         .collection('users')
@@ -152,6 +143,25 @@ class AuthService {
         .collection('saved')
         .get();
 
-    return savedItemsSnapshot.docs.map((doc) => doc.data()).toList();
+    return savedItemsSnapshot.docs
+        .map(
+          (doc) => {
+            ...doc.data(),
+            'id': doc.id, // Doküman ID'si
+          },
+        )
+        .toList();
   }
+
+  // Kullanıcının başlangıçta kaydedilenler koleksiyonunu oluştur
+  Future<void> _createInitialSavedCollection(String userId) async {
+    await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('saved')
+        .doc('initial')
+        .set({});
+  }
+
+  
 }

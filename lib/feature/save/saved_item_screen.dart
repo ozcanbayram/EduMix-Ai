@@ -1,12 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
-import 'package:edumix/core/enums/image_enum.dart';
 import 'package:edumix/feature/information_page.dart/information_page_view.dart';
+import 'package:edumix/feature/welcome/welcome_view.dart';
 import 'package:edumix/product/methods/project_general_methods.dart';
+import 'package:edumix/product/services/auth_service.dart';
 import 'package:edumix/product/widgets/bottom_nav_bar.dart';
-import 'package:edumix/product/widgets/page_padding.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:edumix/product/widgets/button_small.dart';
+import 'package:edumix/product/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class SavedItemsScreen extends StatefulWidget {
@@ -18,23 +18,18 @@ class SavedItemsScreen extends StatefulWidget {
 
 class _SavedItemsScreenState extends State<SavedItemsScreen> {
   late Future<List<Map<String, dynamic>>> _savedItemsFuture;
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
     super.initState();
-    _savedItemsFuture = _fetchSavedItems();
+    _savedItemsFuture = _authService.fetchSavedItems();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(ProjectText.appName),
-        leading: Padding(
-          padding: const PagePadding.all(),
-          child: ImageEnums.logo.toImage,
-        ),
-      ),
+      appBar: MainAppBar(onLogout: _signOut),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _savedItemsFuture,
         builder: (context, snapshot) {
@@ -78,7 +73,8 @@ class _SavedItemsScreenState extends State<SavedItemsScreen> {
                         final confirmed =
                             await _showConfirmationDialog(context);
                         if (confirmed) {
-                          await _deleteSavedItem(item['id'].toString());
+                          await _authService
+                              .unlikeContent(item['id'].toString());
                           setState(() {
                             savedItems.removeAt(index);
                           });
@@ -91,7 +87,7 @@ class _SavedItemsScreenState extends State<SavedItemsScreen> {
                         InformationView(
                           title: item['title'].toString(),
                           content: item['content'].toString(),
-                          isLiked: true, // Beğenildi olarak ayarlanıyor
+                          isLiked: true,
                         ),
                       );
                     },
@@ -108,41 +104,7 @@ class _SavedItemsScreenState extends State<SavedItemsScreen> {
     );
   }
 
-  Future<List<Map<String, dynamic>>> _fetchSavedItems() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return []; // Kullanıcı giriş yapmamışsa boş liste döndür
-    }
-
-    final savedItemsSnapshot = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('saved')
-        .get();
-
-    // Doküman ID'sini de map içerisine ekle
-    return savedItemsSnapshot.docs
-        .map(
-          (doc) => {
-            ...doc.data(),
-            'id': doc.id, // Doküman ID'si
-          },
-        )
-        .toList();
-  }
-
-  Future<void> _deleteSavedItem(String itemId) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // Firebase'deki kaydedilen öğeyi sil
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('saved')
-          .doc(itemId)
-          .delete();
-    }
-  }
+  //! Metotlar
 
   Future<bool> _showConfirmationDialog(BuildContext context) async {
     return await showDialog<bool>(
@@ -151,18 +113,28 @@ class _SavedItemsScreenState extends State<SavedItemsScreen> {
             return AlertDialog(
               title: const Text('Silmek istediğinize emin misiniz?'),
               actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text('Hayır'),
+                ButtonSmall(
+                  text: 'Hayır',
+                  onPress: () {
+                    Navigator.of(context).pop(false);
+                  },
                 ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: const Text('Evet'),
+                ButtonSmall(
+                  text: 'Evet',
+                  onPress: () {
+                    Navigator.of(context).pop(true);
+                  },
                 ),
               ],
             );
           },
         ) ??
-        false; // Kullanıcı dialog'u kapatırsa varsayılan olarak "false" döndür
+        false;
+  }
+
+  Future<void> _signOut() async {
+    await _authService.signOut();
+    navigateReplacementTo(context, const WelcomePage());
+    showCustomSnackBar(context, ProjectText.signedOut);
   }
 }
