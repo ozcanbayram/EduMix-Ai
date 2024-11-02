@@ -128,14 +128,14 @@ class AuthService {
 
   // İçeriği beğenilerden kaldır
   Future<void> unlikeContent(String documentId) async {
-    final user = _auth.currentUser;
-    if (user != null) {
-      await _firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('saved')
+    try {
+      await FirebaseFirestore.instance
+          .collection('saved_items')
           .doc(documentId)
           .delete();
+    } catch (e) {
+      print('Error removing content: $e');
+      rethrow; // Hata durumunu yukarı fırlat
     }
   }
 
@@ -153,25 +153,5 @@ class AuthService {
         .get();
 
     return savedItemsSnapshot.docs.map((doc) => doc.data()).toList();
-  }
-
-// beğenmekten vazgecmek için
-  Future<String> removeLike(String title, String content) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final docRef = await _firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('saved')
-          .add({
-        'title': title,
-        'content': content,
-        'isLiked': true,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-
-      return docRef.id; // Yeni documentId'yi döndür
-    }
-    return ''; // Kullanıcı giriş yapmamışsa boş string döndür
   }
 }

@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:edumix/product/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class InformationView extends StatefulWidget {
@@ -31,46 +29,24 @@ class _InformationViewState extends State<InformationView> {
     isLiked = widget.isLiked;
   }
 
-  Future<void> _deleteSavedItem(String itemId) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // Firebase'deki kaydedilen öğeyi sil
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('saved')
-          .doc(itemId)
-          .delete();
-    }
-  }
-
   Future<void> _toggleLike() async {
     if (isLiked) {
-      // İçeriği beğenilerden kaldır
-      final savedItems = await _authService.fetchSavedItems();
-      final documentId = savedItems.firstWhere(
-        (item) =>
-            item['title'] == widget.title && item['content'] == widget.content,
-        orElse: () => {}, // Varsayılan değer
-      )['id'];
-
-      if (documentId != null) {
-        await _authService.unlikeContent(documentId.toString());
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('İçerik beğenilerden kaldırıldı!')),
-        );
-      }
+      // İçerik zaten beğenildiğinde kullanıcıya bilgi ver
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('İçerik zaten beğenildi!')),
+      );
     } else {
       // İçeriği beğen
       await _authService.likeContent(widget.title, widget.content);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('İçerik beğenildi!')),
       );
-    }
 
-    setState(() {
-      isLiked = !isLiked; // Butona tıklandığında beğeni durumunu değiştir
-    });
+      // Sadece içerik beğenildiğinde isLiked değerini güncelle
+      setState(() {
+        isLiked = true; // Beğeni durumunu true yap
+      });
+    }
   }
 
   void _shareContent() {
@@ -116,19 +92,13 @@ class _InformationViewState extends State<InformationView> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border),
-              onPressed: _toggleLike,
-              color: isLiked ? Colors.red : null,
-            ),
-            IconButton(
               icon: const Icon(Icons.share),
               onPressed: _shareContent,
             ),
             IconButton(
-              icon: const Icon(Icons.home),
-              onPressed: () {
-                Navigator.pop(context); // Ana sayfaya yönlendirme
-              },
+              icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border),
+              onPressed: _toggleLike,
+              color: isLiked ? Colors.red : null,
             ),
           ],
         ),
