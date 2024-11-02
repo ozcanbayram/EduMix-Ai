@@ -158,21 +158,21 @@ class _InformationViewState extends State<InformationView> {
   void _toggleDarkMode() {
     setState(() {
       isDarkMode = !isDarkMode;
-      // System UI overlay style güncellemesi
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarColor: isDarkMode
-              ? ColorItems.project_black
-              : ColorItems.project_scaffold_color,
-          statusBarIconBrightness:
-              isDarkMode ? Brightness.light : Brightness.dark,
-          systemNavigationBarColor: isDarkMode
-              ? ColorItems.project_black
-              : ColorItems.project_scaffold_color,
-          systemNavigationBarIconBrightness:
-              isDarkMode ? Brightness.light : Brightness.dark,
-        ),
-      );
+      //! System UI overlay style güncellemesi (İptal edildi)
+      // SystemChrome.setSystemUIOverlayStyle(
+      //   SystemUiOverlayStyle(
+      //     statusBarColor: isDarkMode
+      //         ? ColorItems.project_black
+      //         : ColorItems.project_scaffold_color,
+      //     statusBarIconBrightness:
+      //         isDarkMode ? Brightness.light : Brightness.dark,
+      //     systemNavigationBarColor: isDarkMode
+      //         ? ColorItems.project_black
+      //         : ColorItems.project_scaffold_color,
+      //     systemNavigationBarIconBrightness:
+      //         isDarkMode ? Brightness.light : Brightness.dark,
+      //   ),
+      // );
     });
   }
 }
