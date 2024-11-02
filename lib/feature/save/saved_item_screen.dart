@@ -9,8 +9,21 @@ import 'package:edumix/product/widgets/page_padding.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class SavedItemsScreen extends StatelessWidget {
+class SavedItemsScreen extends StatefulWidget {
   const SavedItemsScreen({super.key});
+
+  @override
+  _SavedItemsScreenState createState() => _SavedItemsScreenState();
+}
+
+class _SavedItemsScreenState extends State<SavedItemsScreen> {
+  late Future<List<Map<String, dynamic>>> _savedItemsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _savedItemsFuture = _fetchSavedItems();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +36,7 @@ class SavedItemsScreen extends StatelessWidget {
         ),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _fetchSavedItems(),
+        future: _savedItemsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -59,7 +72,19 @@ class SavedItemsScreen extends StatelessWidget {
                         fontSize: WidgetSizes.mediumTextSize,
                       ),
                     ),
-                    // trailing: const Icon(Icons.chevron_right),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                      onPressed: () async {
+                        final confirmed =
+                            await _showConfirmationDialog(context);
+                        if (confirmed) {
+                          await _deleteSavedItem(item['id'].toString());
+                          setState(() {
+                            savedItems.removeAt(index);
+                          });
+                        }
+                      },
+                    ),
                     onTap: () {
                       navigateTo(
                         context,
@@ -94,6 +119,49 @@ class SavedItemsScreen extends StatelessWidget {
         .collection('saved')
         .get();
 
-    return savedItemsSnapshot.docs.map((doc) => doc.data()).toList();
+    // Doküman ID'sini de map içerisine ekle
+    return savedItemsSnapshot.docs
+        .map(
+          (doc) => {
+            ...doc.data(),
+            'id': doc.id, // Doküman ID'si
+          },
+        )
+        .toList();
+  }
+
+  Future<void> _deleteSavedItem(String itemId) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Firebase'deki kaydedilen öğeyi sil
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('saved')
+          .doc(itemId)
+          .delete();
+    }
+  }
+
+  Future<bool> _showConfirmationDialog(BuildContext context) async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Silmek istediğinize emin misiniz?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Hayır'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Evet'),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false; // Kullanıcı dialog'u kapatırsa varsayılan olarak "false" döndür
   }
 }
