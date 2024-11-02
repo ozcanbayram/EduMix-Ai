@@ -34,43 +34,62 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(onLogout: _signOut),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const PagePadding.all(),
-              child: _isLoading
-                  ? const CustomLoadingWidget()
-                  : _categories.isEmpty
-                      ? const Center(
-                          child: Text(ProjectText.categoriestNotFound),
-                        )
-                      : CategoriesListView(categories: _categories),
-            ),
-          ),
-        ],
+      body: Padding(
+        padding: const PagePadding.all(),
+        child:
+            _isLoading ? const CustomLoadingWidget() : _buildCategoriesView(),
       ),
-      bottomNavigationBar: const CustomBottomNavigationBar(
-        selectedIndex: 0,
+      bottomNavigationBar: const CustomBottomNavigationBar(selectedIndex: 0),
+    );
+  }
+
+  //! Metodlar
+
+  Widget _buildCategoriesView() {
+    if (_categories.isEmpty) {
+      return const Center(child: Text(ProjectText.categoriestNotFound));
+    }
+
+    return ListView.builder(
+      itemCount: _categories.length,
+      itemBuilder: (context, index) =>
+          _buildCategoryCard(context, _categories[index]),
+    );
+  }
+
+  Widget _buildCategoryCard(BuildContext context, String category) {
+    return Card(
+      child: ListTile(
+        trailing: const Icon(Icons.chevron_right_outlined),
+        leading: const Icon(
+          Icons.auto_awesome_outlined,
+          color: ColorItems.project_orange,
+        ),
+        title: Padding(
+          padding: CustomPaddings.verticalMedium,
+          child: Text(
+            category,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+        ),
+        subtitle: Text('$category ${ProjectText.subtitleDescription}'),
+        onTap: () => navigateWithParameter(
+          context,
+          (param) => TitleGeneratorView(category: param),
+          category,
+        ),
       ),
     );
   }
 
-  //! ***** Metodlar ve Widgetlar *****
-
-  //* Firebase metodları:
   Future<void> _loadCategories() async {
+    setState(() => _isLoading = true);
     try {
-      final categories = await _categoryService.alphabeticalFetchCategories();
-      setState(() {
-        _categories = categories;
-        _isLoading = false;
-      });
+      _categories = await _categoryService.alphabeticalFetchCategories();
     } catch (e) {
-      // print('Error loading categories: $e'); //for debugg
-      setState(() {
-        _isLoading = false;
-      });
+      // Hata durumunda belki bir kullanıcı mesajı eklenebilir
+    } finally {
+      setState(() => _isLoading = false);
     }
   }
 
@@ -80,45 +99,5 @@ class _HomeViewState extends State<HomeView> {
     navigateReplacementTo(context, const WelcomePage());
     // ignore: use_build_context_synchronously
     showCustomSnackBar(context, ProjectText.signedOut);
-  }
-}
-
-//* Kategori listesi:
-
-class CategoriesListView extends StatelessWidget {
-  const CategoriesListView({
-    required List<String> categories,
-    super.key,
-  }) : _categories = categories;
-
-  final List<String> _categories;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _categories.length,
-      itemBuilder: (context, index) {
-        return Card(
-          child: ListTile(
-            trailing: const Icon(Icons.chevron_right_outlined),
-            leading: const Icon(
-              Icons.auto_awesome_outlined,
-              color: ColorItems.project_orange,
-            ),
-            title: Text(_categories[index]),
-            subtitle: Text(
-              '${_categories[index]} ${ProjectText.subtitleDescription}',
-            ),
-            onTap: () {
-              navigateWithParameter(
-                context,
-                (param) => TitleGeneratorView(category: param),
-                _categories[index],
-              );
-            },
-          ),
-        );
-      },
-    );
   }
 }

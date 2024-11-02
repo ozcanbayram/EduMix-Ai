@@ -28,15 +28,13 @@ class _RegisterViewState extends State<RegisterView> {
   bool passwordVisibility = false;
   bool passwordAgainVisibility = false;
 
-  void _changePasswordVisibility() {
+  void _togglePasswordVisibility(bool isPassword) {
     setState(() {
-      passwordVisibility = !passwordVisibility;
-    });
-  }
-
-  void _changePassworAgaindVisibility() {
-    setState(() {
-      passwordAgainVisibility = !passwordAgainVisibility;
+      if (isPassword) {
+        passwordVisibility = !passwordVisibility;
+      } else {
+        passwordAgainVisibility = !passwordAgainVisibility;
+      }
     });
   }
 
@@ -52,40 +50,8 @@ class _RegisterViewState extends State<RegisterView> {
           child: Column(
             children: [
               const LogoWidget(),
-              Column(
-                children: [
-                  CustomNameField(nameController: _nameController),
-                  CustomEmailField(nameController: _emailController),
-                  CustomPasswordField(
-                    nameController: _passwordController,
-                    obscureText: !passwordVisibility,
-                    suffixIcon: passwordVisibility
-                        ? const Icon(Icons.visibility_off)
-                        : const Icon(Icons.visibility),
-                    onPressed: _changePasswordVisibility,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  CustomPasswordField(
-                    nameController: _passwordAgainController,
-                    obscureText: !passwordAgainVisibility,
-                    suffixIcon: passwordAgainVisibility
-                        ? const Icon(Icons.visibility_off)
-                        : const Icon(Icons.visibility),
-                    onPressed: _changePassworAgaindVisibility,
-                    textInputAction: TextInputAction.next,
-                  ),
-                ],
-              ),
-              ButtonLarge(
-                onPressed: _register,
-                buttonsText: ProjectText.registerButton,
-              ),
-              AuthTextButton(
-                onPressed: () {
-                  navigateTo(context, const LoginView());
-                },
-                text: ProjectText.haveAccountLogin,
-              ),
+              _buildInputFields(),
+              _buildActionButtons(context),
             ],
           ),
         ),
@@ -93,7 +59,51 @@ class _RegisterViewState extends State<RegisterView> {
     );
   }
 
-  //Auth kayit metodu:
+  Widget _buildInputFields() {
+    return Column(
+      children: [
+        CustomNameField(nameController: _nameController),
+        CustomEmailField(nameController: _emailController),
+        CustomPasswordField(
+          nameController: _passwordController,
+          obscureText: !passwordVisibility,
+          suffixIcon: passwordVisibility
+              ? const Icon(Icons.visibility_off)
+              : const Icon(Icons.visibility),
+          onPressed: () => _togglePasswordVisibility(true),
+          textInputAction: TextInputAction.next,
+        ),
+        CustomPasswordField(
+          nameController: _passwordAgainController,
+          obscureText: !passwordAgainVisibility,
+          suffixIcon: passwordAgainVisibility
+              ? const Icon(Icons.visibility_off)
+              : const Icon(Icons.visibility),
+          onPressed: () => _togglePasswordVisibility(false),
+          textInputAction: TextInputAction.next,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButtons(BuildContext context) {
+    return Column(
+      children: [
+        ButtonLarge(
+          onPressed: _register,
+          buttonsText: ProjectText.registerButton,
+        ),
+        AuthTextButton(
+          onPressed: () {
+            navigateTo(context, const LoginView());
+          },
+          text: ProjectText.haveAccountLogin,
+        ),
+      ],
+    );
+  }
+
+  // Auth kayıt metodu:
   Future<void> _register() async {
     final email = _emailController.text;
     final password = _passwordController.text;
@@ -112,14 +122,9 @@ class _RegisterViewState extends State<RegisterView> {
     final user = await _registerModel.register(email, password, displayName);
 
     if (user != null) {
-      //* kayit basarili, mesaj goster ve yonlendir:
-      // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.successRegister);
-      // ignore: use_build_context_synchronously
       navigateReplacementTo(context, const HomeView());
     } else {
-      // Kayıt hatası
-      // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.failedRegister);
     }
   }

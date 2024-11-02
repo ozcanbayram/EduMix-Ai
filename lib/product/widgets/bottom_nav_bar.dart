@@ -1,4 +1,6 @@
 import 'package:edumix/core/constants/color_items.dart';
+import 'package:edumix/core/constants/project_text.dart';
+import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:edumix/feature/home/home_view.dart';
 import 'package:edumix/feature/save/saved_item_screen.dart';
 import 'package:edumix/feature/search/search_view.dart';
@@ -22,6 +24,7 @@ class CustomBottomNavigationBar extends StatefulWidget {
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
+    // ignore: use_colored_box
     return Container(
       color: ColorItems.project_scaffold_color,
       child: Padding(
@@ -49,18 +52,18 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           tabs: const [
             GButton(
               icon: Icons.home_outlined,
-              iconSize: 30,
-              text: 'Anasayfa',
+              iconSize: WidgetSizes.bottomBarIconsSize,
+              text: ProjectText.home,
             ),
             GButton(
               icon: Icons.search,
-              text: 'Kategori Ara',
-              iconSize: 30,
+              text: ProjectText.search,
+              iconSize: WidgetSizes.bottomBarIconsSize,
             ),
             GButton(
               icon: Icons.favorite_border_outlined,
-              iconSize: 30,
-              text: 'Beğeniler',
+              iconSize: WidgetSizes.bottomBarIconsSize,
+              text: ProjectText.likes,
             ),
           ],
         ),

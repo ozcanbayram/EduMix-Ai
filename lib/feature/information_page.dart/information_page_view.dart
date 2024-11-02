@@ -6,6 +6,14 @@ import 'package:edumix/product/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+//! BU SAYFAYA ÖZEL BAZI TEMA AYARI OLDUĞUNDAN DOLAYI
+//! BİRAZ DAHA KARMAŞIK ANA YAPISI :
+//       appBar: _buildAppBar(appBarColor, textColor),
+//       body: _buildAllContent(appBarColor, textColor),
+//       bottomNavigationBar: _buildBottomAppBar(appBarColor),
+//* BAZI KOD TEKRARLARININ SEBEBİ METOT YA DA WİDGET OLARAK AYIRINCA
+//* HATA ALMAM VE ZAMANIMIN KISITI
+
 class InformationView extends StatefulWidget {
   const InformationView({
     required this.title,
@@ -42,67 +50,85 @@ class _InformationViewState extends State<InformationView> {
     final textColor = isDarkMode ? Colors.white : Colors.black;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(ProjectText.appName),
-        backgroundColor: appBarColor,
-        iconTheme: IconThemeData(color: textColor),
-        titleTextStyle:
-            TextStyle(color: textColor, fontSize: WidgetSizes.largeTextSize),
-      ),
-      body: Container(
-        color: appBarColor,
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                widget.title,
-                style: TextStyle(
-                  fontSize: WidgetSizes.largeTextSize,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
-              ),
-              Text(
-                widget.content,
-                style: TextStyle(
-                  fontSize: WidgetSizes.mediumTextSize,
-                  color: textColor,
-                ),
-              ),
-            ],
+      appBar: _buildAppBar(appBarColor, textColor),
+      body: _buildAllContent(appBarColor, textColor),
+      bottomNavigationBar: _buildBottomAppBar(appBarColor),
+    );
+  }
+
+  //! Metotlar
+
+  BottomAppBar _buildBottomAppBar(Color appBarColor) {
+    return BottomAppBar(
+      color: appBarColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          IconButton(
+            icon: const Icon(Icons.copy),
+            onPressed: _copyContent,
+            color:
+                isDarkMode ? ColorItems.project_blue : ColorItems.project_gray,
           ),
-        ),
+          IconButton(
+            icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border),
+            onPressed: _toggleLike,
+            color:
+                isLiked ? ColorItems.project_orange : ColorItems.project_gray,
+          ),
+          IconButton(
+            icon: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
+            onPressed: _toggleDarkMode,
+            color:
+                isDarkMode ? ColorItems.project_blue : ColorItems.project_gray,
+          ),
+        ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: appBarColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+    );
+  }
+
+  Container _buildAllContent(Color appBarColor, Color textColor) {
+    return Container(
+      color: appBarColor,
+      padding: const EdgeInsets.all(16),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            IconButton(
-              icon: const Icon(Icons.copy),
-              onPressed: _copyContent,
-              color: isDarkMode
-                  ? ColorItems.project_blue
-                  : ColorItems.project_gray,
+            Text(
+              widget.title,
+              style: TextStyle(
+                fontSize: WidgetSizes.largeTextSize,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
             ),
-            IconButton(
-              icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border),
-              onPressed: _toggleLike,
-              color:
-                  isLiked ? ColorItems.project_orange : ColorItems.project_gray,
-            ),
-            IconButton(
-              icon: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
-              onPressed: _toggleDarkMode,
-              color: isDarkMode
-                  ? ColorItems.project_blue
-                  : ColorItems.project_gray,
+            Text(
+              widget.content,
+              style: TextStyle(
+                fontSize: WidgetSizes.mediumTextSize,
+                color: textColor,
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  AppBar _buildAppBar(Color appBarColor, Color textColor) {
+    return AppBar(
+      title: const Text(
+        ProjectText.appName,
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: WidgetSizes.bigText,
+        ),
+      ),
+      backgroundColor: appBarColor,
+      iconTheme: IconThemeData(color: textColor),
+      titleTextStyle:
+          TextStyle(color: textColor, fontSize: WidgetSizes.largeTextSize),
     );
   }
 

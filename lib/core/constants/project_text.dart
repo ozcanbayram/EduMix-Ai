@@ -58,4 +58,23 @@ class ProjectText {
 
 //! Title GeneratorPage:
   static const readThisAbout = 'Yazının Devamını Oku';
+  static const errorTitleGenerator = 'Başlık Üretilirken Hata Oluştu';
+  static const failCreateContent = 'İçerik üretilemedi';
+  static const refreshAbout = 'Başka Konu Öner';
+
+  //! Liked Page:
+  static const likedNotYet = 'Henüz beğenilen içerik yok.';
+  static const areUSureDelete = 'Silmek istediğinize emin misiniz?';
+
+  //! Bottom Nav Bar:
+  static const home = 'Anasayfa';
+  static const search = 'Kategori Ara';
+  static const likes = 'Beğeniler';
+
+  //! LoadingWidgets
+  static const firstAnimationUrl =
+      'https://lottie.host/c3a288a2-a8c2-4887-9623-0eb730256bfb/QepoZQEDa0.json';
+
+  static const searchAnimationUrl =
+      'https://lottie.host/c4bb20e8-5175-4d59-bd3e-9fc2c3ba6941/RoAOEbKWZh.json';
 }

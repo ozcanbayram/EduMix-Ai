@@ -1,3 +1,4 @@
+import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
 import 'package:edumix/feature/information_page.dart/information_page_view.dart';
@@ -17,31 +18,14 @@ class TitleGeneratorView extends StatefulWidget {
 }
 
 class _TitleGeneratorViewState extends State<TitleGeneratorView> {
-  late String _currentTitle;
-  late String _fullContent;
+  String _currentTitle = '';
+  String _fullContent = '';
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _generateTitleAndContent();
-  }
-
-  Future<void> _generateTitleAndContent() async {
-    setState(() => _isLoading = true);
-
-    final title = await titleGeneratorAi(widget.category);
-    final content = await informationCreator(title ?? '');
-
-    setState(() {
-      _currentTitle = title ?? 'Başlık Üretilirken Hata Oluştu';
-      _fullContent = content ?? 'İçerik üretilemedi';
-      _isLoading = false;
-    });
-  }
-
-  Future<void> _refreshTitleAndContent() async {
-    await _generateTitleAndContent();
   }
 
   @override
@@ -51,7 +35,7 @@ class _TitleGeneratorViewState extends State<TitleGeneratorView> {
         title: const Text(ProjectText.appName),
       ),
       body: _isLoading
-          ? const Center(child: CustomLoadingWidget())
+          ? const CustomLoadingWidget()
           : Padding(
               padding: const PagePadding.all(),
               child: Column(
@@ -60,72 +44,109 @@ class _TitleGeneratorViewState extends State<TitleGeneratorView> {
                   Expanded(
                     flex: 6,
                     child: SingleChildScrollView(
-                      child: Card(
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 152, 211, 247),
-                                Colors.white,
-                              ], // Renk geçişleri
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                          ),
-                          child: Padding(
-                            padding: const PagePadding.all(),
-                            child: Column(
-                              children: [
-                                Text(
-                                  _currentTitle,
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    fontSize: WidgetSizes.largeTextSize,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  _fullContent,
-                                  style: const TextStyle(
-                                    fontSize: WidgetSizes.mediumTextSize,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  maxLines: 20,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      child: _buildContentCard(),
                     ),
                   ),
-
-                  // Butonlar
-                  Column(
-                    children: [
-                      ButtonLarge(
-                        onPressed: () {
-                          navigateTo(
-                            context,
-                            InformationView(
-                              title: _currentTitle,
-                              content: _fullContent,
-                              isLiked: false, // Beğenildi olarak ayarlanıyor
-                            ),
-                          );
-                        },
-                        buttonsText: ProjectText.readThisAbout,
-                      ),
-                      ButtonLarge(
-                        onPressed: _refreshTitleAndContent,
-                        buttonsText: 'Başka Konu Öner',
-                      ),
-                    ],
-                  ),
+                  _buildActionButtons(context),
                 ],
               ),
             ),
     );
+  }
+
+  Widget _buildContentCard() {
+    return Card(
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              ColorItems.project_light_blue,
+              ColorItems.project_white,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Padding(
+          padding: const PagePadding.all(),
+          child: Column(
+            children: [
+              _buildTitleText(),
+              _buildContentText(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitleText() {
+    return Text(
+      _currentTitle.isNotEmpty
+          ? _currentTitle
+          : ProjectText.errorTitleGenerator,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        fontSize: WidgetSizes.largeTextSize,
+        fontWeight: FontWeight.bold,
+      ),
+    );
+  }
+
+  Widget _buildContentText() {
+    return Text(
+      _fullContent.isNotEmpty ? _fullContent : ProjectText.failCreateContent,
+      style: const TextStyle(
+        fontSize: WidgetSizes.mediumTextSize,
+        fontWeight: FontWeight.w500,
+      ),
+      maxLines: WidgetSizes.maxLinesHigh,
+      overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  Column _buildActionButtons(BuildContext context) {
+    return Column(
+      children: [
+        ButtonLarge(
+          onPressed: () {
+            navigateTo(
+              context,
+              InformationView(
+                title: _currentTitle,
+                content: _fullContent,
+                isLiked: false,
+              ),
+            );
+          },
+          buttonsText: ProjectText.readThisAbout,
+        ),
+        ButtonLarge(
+          onPressed: _refreshTitleAndContent,
+          buttonsText: ProjectText.refreshAbout,
+        ),
+      ],
+    );
+  }
+
+  Future<void> _generateTitleAndContent() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final title = await titleGeneratorAi(widget.category);
+      final content = await informationCreator(title ?? '');
+      _currentTitle = title ?? '';
+      _fullContent = content ?? '';
+    } catch (e) {
+      // Hata durumunda varsayılan değer ataması yapılır.
+      _currentTitle = ProjectText.errorTitleGenerator;
+      _fullContent = ProjectText.failCreateContent;
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _refreshTitleAndContent() async {
+    await _generateTitleAndContent();
   }
 }

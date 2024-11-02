@@ -23,4 +23,6 @@ class ColorItems {
   static const Color project_light_gray = Color(0xffaab8c2);
 
   static const Color project_white = Color(0xffFFFFFF);
+
+  static const Color project_light_blue = Color.fromARGB(255, 152, 211, 247);
 }

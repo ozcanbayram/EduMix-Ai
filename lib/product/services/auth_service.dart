@@ -65,38 +65,6 @@ class AuthService {
   // Kullanıcı çıkış işlemi
   Future<void> signOut() async => _auth.signOut();
 
-  // Kullanıcı adını Firestore'dan al
-  Future<String?> getUserName() async {
-    try {
-      final user = getCurrentUser();
-      if (user != null) {
-        final userDoc =
-            await _firestore.collection('users').doc(user.uid).get();
-        return userDoc.data()?['displayName'] as String?;
-      }
-    } catch (e) {
-      print('Kullanıcı adı alınırken hata: $e');
-    }
-    return null;
-  }
-
-  // Kullanıcının beğenip beğenmediğini kontrol et
-  Future<bool> checkIfLiked(String title, String content) async {
-    final user = getCurrentUser();
-    if (user != null) {
-      final querySnapshot = await _firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('saved')
-          .where('title', isEqualTo: title)
-          .where('content', isEqualTo: content)
-          .get();
-
-      return querySnapshot.docs.isNotEmpty;
-    }
-    return false;
-  }
-
   // İçeriği beğen
   Future<void> likeContent(String title, String content) async {
     final user = getCurrentUser();
@@ -163,5 +131,18 @@ class AuthService {
         .set({});
   }
 
-  
+  //? Kullanıcı adını Firestore'dan al --> Henüz kullanılmıyor
+  // Future<String?> getUserName() async {
+  //   try {
+  //     final user = getCurrentUser();
+  //     if (user != null) {
+  //       final userDoc =
+  //           await _firestore.collection('users').doc(user.uid).get();
+  //       return userDoc.data()?['displayName'] as String?;
+  //     }
+  //   } catch (e) {
+  //     print('Kullanıcı adı alınırken hata: $e');
+  //   }
+  //   return null;
+  // }
 }

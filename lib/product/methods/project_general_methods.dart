@@ -69,7 +69,8 @@ void navigateReplacementTo(BuildContext context, Widget page) {
   );
 }
 
-//* Navigator3 = yeni sayfa acarken belirli sayfaya gelince eskileri kapatir (navigateUntil)
+//* Navigator3 = yeni sayfa acarken belirli sayfaya
+//* gelince eskileri kapatir (navigateUntil)
 void navigateUntil(BuildContext context, Widget page) {
   // Geçerli sayfayı kapat
   Navigator.popUntil(context, (route) {

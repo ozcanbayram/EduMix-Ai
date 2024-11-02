@@ -25,7 +25,7 @@ class _LoginViewState extends State<LoginView> {
 
   bool passwordVisibility = false;
 
-  void _changePasswordVisibility() {
+  void _togglePasswordVisibility() {
     setState(() {
       passwordVisibility = !passwordVisibility;
     });
@@ -43,34 +43,48 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             children: [
               const LogoWidget(),
-              Column(
-                children: [
-                  CustomEmailField(nameController: _emailController),
-                  CustomPasswordField(
-                    nameController: _passwordController,
-                    obscureText: !passwordVisibility,
-                    suffixIcon: passwordVisibility
-                        ? const Icon(Icons.visibility_off)
-                        : const Icon(Icons.visibility),
-                    onPressed: _changePasswordVisibility,
-                    textInputAction: TextInputAction.next,
-                  ),
-                ],
-              ),
-              ButtonLarge(
-                onPressed: _login,
-                buttonsText: ProjectText.loginButton,
-              ),
-              AuthTextButton(
-                onPressed: () {
-                  navigateTo(context, const ForgotPasswordView());
-                },
-                text: ProjectText.forgotPassword,
-              ),
+              _buildInputFields(),
+              _buildActionButtons(context),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  //! Metotlar ve Widgetlar
+
+  Widget _buildInputFields() {
+    return Column(
+      children: [
+        CustomEmailField(nameController: _emailController),
+        CustomPasswordField(
+          nameController: _passwordController,
+          obscureText: !passwordVisibility,
+          suffixIcon: passwordVisibility
+              ? const Icon(Icons.visibility_off)
+              : const Icon(Icons.visibility),
+          onPressed: _togglePasswordVisibility,
+          textInputAction: TextInputAction.next,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButtons(BuildContext context) {
+    return Column(
+      children: [
+        ButtonLarge(
+          onPressed: _login,
+          buttonsText: ProjectText.loginButton,
+        ),
+        AuthTextButton(
+          onPressed: () {
+            navigateTo(context, const ForgotPasswordView());
+          },
+          text: ProjectText.forgotPassword,
+        ),
+      ],
     );
   }
 
@@ -85,12 +99,13 @@ class _LoginViewState extends State<LoginView> {
 
     final user = await _loginModel.login(email, password);
     if (user != null) {
-      //*kayit basarili, mesaj goster ve yonlendir:
+      // Kayıt başarılı, mesaj göster ve yönlendir
       // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.successLogin);
       // ignore: use_build_context_synchronously
       navigateReplacementTo(context, const HomeView());
     } else {
+      // Kayıt hatası
       // ignore: use_build_context_synchronously
       showCustomSnackBar(context, ProjectText.failedLogin);
     }

@@ -110,7 +110,7 @@ class CustomNameField extends StatelessWidget {
 }
 
 class SearchTextField extends StatelessWidget {
-  const SearchTextField({required this.onSearch});
+  const SearchTextField({required this.onSearch, super.key});
   final ValueChanged<String> onSearch;
 
   @override

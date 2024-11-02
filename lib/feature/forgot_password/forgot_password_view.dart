@@ -33,20 +33,28 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: context.padding.medium,
-                child: ImageEnums.forgot.toImage,
-              ),
+              _buildForgotImage(context),
               const MainDescriptionWidget(text: ProjectText.forgotPassword),
               CustomEmailField(nameController: _emailController),
-              ButtonLarge(
-                onPressed: _resetPassword,
-                buttonsText: ProjectText.sendEmail,
-              ),
+              _buildSendButton(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildForgotImage(BuildContext context) {
+    return Padding(
+      padding: context.padding.medium,
+      child: ImageEnums.forgot.toImage,
+    );
+  }
+
+  Widget _buildSendButton() {
+    return ButtonLarge(
+      onPressed: _resetPassword,
+      buttonsText: ProjectText.sendEmail,
     );
   }
 
@@ -58,9 +66,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordView> {
     }
 
     await _authService.resetPassword(email);
-    // ignore: use_build_context_synchronously
+    // Şifre sıfırlama bağlantısı gönderildi mesajını göster
     showCustomSnackBar(context, ProjectText.sendedResetPasswordConnection);
-    // ignore: use_build_context_synchronously
     Navigator.pop(context); // Kullanıcıyı bir önceki sayfaya yönlendir
   }
 }

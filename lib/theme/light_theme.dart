@@ -47,7 +47,10 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       color: ColorItems.project_second_text_color,
       fontWeight: FontWeight.w500,
     ),
-    headlineSmall: TextStyle(color: ColorItems.project_second_text_color),
+    headlineSmall: TextStyle(
+      color: ColorItems.project_second_text_color,
+      fontWeight: FontWeight.w500,
+    ),
   ),
 
   //ELEVATED BUTTON THEME

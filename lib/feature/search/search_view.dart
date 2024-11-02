@@ -15,6 +15,7 @@ class CategorySearchPage extends StatefulWidget {
   const CategorySearchPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CategorySearchPageState createState() => _CategorySearchPageState();
 }
 
@@ -28,20 +29,26 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(onLogout: _signOut),
-      body: Padding(
-        padding: const PagePadding.all(),
-        child: Column(
-          children: [
-            SearchTextField(onSearch: _onSearch),
-            Expanded(
-              child: _isLoading
-                  ? const SingleChildScrollView(child: LoadingIndicator())
-                  : ResultList(_searchResults),
-            ),
-          ],
-        ),
-      ),
+      body: _searchContent(),
       bottomNavigationBar: const CustomBottomNavigationBar(selectedIndex: 1),
+    );
+  }
+
+  //! metotlar
+
+  Padding _searchContent() {
+    return Padding(
+      padding: const PagePadding.all(),
+      child: Column(
+        children: [
+          SearchTextField(onSearch: _onSearch),
+          Expanded(
+            child: _isLoading
+                ? const SingleChildScrollView(child: LoadingIndicator())
+                : ResultList(_searchResults),
+          ),
+        ],
+      ),
     );
   }
 
@@ -79,7 +86,9 @@ class _CategorySearchPageState extends State<CategorySearchPage> {
 
   Future<void> _signOut() async {
     await _authService.signOut();
+    // ignore: use_build_context_synchronously
     navigateReplacementTo(context, const WelcomePage());
+    // ignore: use_build_context_synchronously
     showCustomSnackBar(context, ProjectText.signedOut);
   }
 }
