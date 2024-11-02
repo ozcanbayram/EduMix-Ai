@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edumix/core/constants/color_items.dart';
 import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
+import 'package:edumix/product/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class InformationView extends StatefulWidget {
   const InformationView({
@@ -20,6 +19,7 @@ class InformationView extends StatefulWidget {
 }
 
 class _InformationViewState extends State<InformationView> {
+  final AuthService _authService = AuthService();
   bool isLiked = false;
   String? documentId;
 
@@ -30,70 +30,28 @@ class _InformationViewState extends State<InformationView> {
   }
 
   Future<void> _checkIfLiked() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final firestore = FirebaseFirestore.instance;
-      final querySnapshot = await firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('saved')
-          .where('title', isEqualTo: widget.title)
-          .where('content', isEqualTo: widget.content)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        setState(() {
-          isLiked = true;
-          documentId = querySnapshot.docs.first.id; // documentId'yi al
-        });
-      }
-    }
+    isLiked = await _authService.checkIfLiked(widget.title, widget.content);
+    setState(() {});
   }
 
   Future<void> _likeContent() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final firestore = FirebaseFirestore.instance;
-
-      final docRef = await firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('saved')
-          .add({
-        'title': widget.title,
-        'content': widget.content,
-        'isLiked': true,
-        'timestamp': FieldValue.serverTimestamp(),
-      });
-
-      setState(() {
-        isLiked = true;
-        documentId = docRef.id; // Yeni documentId'yi kaydet
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Beğenildi!')),
-      );
-    }
+    final id = await _authService.removeLike(widget.title, widget.content);
+    setState(() {
+      isLiked = true;
+      documentId = id; // Yeni documentId'yi kaydet
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Beğenildi!')),
+    );
   }
 
   Future<void> _unlikeContent() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null && documentId != null) {
-      final firestore = FirebaseFirestore.instance;
-
-      await firestore
-          .collection('users')
-          .doc(user.uid)
-          .collection('saved')
-          .doc(documentId)
-          .delete();
-
+    if (documentId != null) {
+      await _authService.unlikeContent(documentId!);
       setState(() {
         isLiked = false;
         documentId = null; // documentId'yi sıfırla
       });
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Beğenilerden kaldırıldı!')),
       );
