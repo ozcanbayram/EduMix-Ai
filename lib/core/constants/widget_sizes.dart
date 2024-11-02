@@ -12,5 +12,5 @@ class WidgetSizes {
   static const double indicatorSize = 15;
   static const double toolBarHeight = 75;
   static const int maxLinesHigh = 20;
-  static const double bottomBarIconsSize = 20;
+  static const double bottomBarIconsSize = 30;
 }
