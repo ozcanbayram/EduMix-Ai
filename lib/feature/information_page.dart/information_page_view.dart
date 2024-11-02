@@ -1,7 +1,10 @@
 import 'package:edumix/core/constants/color_items.dart';
+import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/constants/widget_sizes.dart';
+import 'package:edumix/product/methods/project_general_methods.dart';
 import 'package:edumix/product/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InformationView extends StatefulWidget {
   const InformationView({
@@ -21,6 +24,8 @@ class InformationView extends StatefulWidget {
 
 class _InformationViewState extends State<InformationView> {
   late bool isLiked;
+  bool isDarkMode = false;
+
   final AuthService _authService = AuthService();
 
   @override
@@ -31,38 +36,61 @@ class _InformationViewState extends State<InformationView> {
 
   Future<void> _toggleLike() async {
     if (isLiked) {
-      // İçerik zaten beğenildiğinde kullanıcıya bilgi ver
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('İçerik zaten beğenildi!')),
-      );
+      showCustomSnackBar(context, 'İçerik Zaten Beğenildi');
     } else {
-      // İçeriği beğen
       await _authService.likeContent(widget.title, widget.content);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('İçerik beğenildi!')),
-      );
-
-      // Sadece içerik beğenildiğinde isLiked değerini güncelle
-      setState(() {
-        isLiked = true; // Beğeni durumunu true yap
-      });
+      showCustomSnackBar(context, 'İçerik Beğenildi');
+      setState(() => isLiked = true);
     }
   }
 
-  void _shareContent() {
-    // Paylaşma işlemi burada yapılacak.
+  Future<void> _copyContent() async {
+    final textToCopy = '${widget.title}\n\n${widget.content}';
+    await Clipboard.setData(ClipboardData(text: textToCopy));
+
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('İçerik paylaşıldı!')),
+      const SnackBar(content: Text('İçerik kopyalandı!')),
     );
+  }
+
+  void _toggleDarkMode() {
+    setState(() {
+      isDarkMode = !isDarkMode;
+      // System UI overlay style güncellemesi
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarColor: isDarkMode
+              ? ColorItems.project_black
+              : ColorItems.project_scaffold_color,
+          statusBarIconBrightness:
+              isDarkMode ? Brightness.light : Brightness.dark,
+          systemNavigationBarColor: isDarkMode
+              ? ColorItems.project_black
+              : ColorItems.project_scaffold_color,
+          systemNavigationBarIconBrightness:
+              isDarkMode ? Brightness.light : Brightness.dark,
+        ),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final appBarColor = isDarkMode
+        ? ColorItems.project_black
+        : ColorItems.project_scaffold_color;
+    final textColor = isDarkMode ? Colors.white : Colors.black;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detaylar'),
+        title: const Text(ProjectText.appName),
+        backgroundColor: appBarColor,
+        iconTheme: IconThemeData(color: textColor),
+        titleTextStyle:
+            TextStyle(color: textColor, fontSize: WidgetSizes.largeTextSize),
       ),
-      body: Padding(
+      body: Container(
+        color: appBarColor,
         padding: const EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
@@ -70,35 +98,44 @@ class _InformationViewState extends State<InformationView> {
             children: [
               Text(
                 widget.title,
-                style: const TextStyle(
-                  fontSize: WidgetSizes.largeTextSize,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(
+                    fontSize: WidgetSizes.largeTextSize,
+                    fontWeight: FontWeight.bold,
+                    color: textColor),
               ),
               const SizedBox(height: 10),
               Text(
                 widget.content,
-                style: const TextStyle(
-                  fontSize: WidgetSizes.mediumTextSize,
-                ),
+                style: TextStyle(
+                    fontSize: WidgetSizes.mediumTextSize, color: textColor),
               ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: ColorItems.project_scaffold_color,
+        color: appBarColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              icon: const Icon(Icons.share),
-              onPressed: _shareContent,
+              icon: const Icon(Icons.copy),
+              onPressed: _copyContent,
+              color: isDarkMode
+                  ? ColorItems.project_blue
+                  : ColorItems.project_gray,
             ),
             IconButton(
               icon: Icon(isLiked ? Icons.favorite : Icons.favorite_border),
               onPressed: _toggleLike,
               color: isLiked ? Colors.red : null,
+            ),
+            IconButton(
+              icon: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
+              onPressed: _toggleDarkMode,
+              color: isDarkMode
+                  ? ColorItems.project_blue
+                  : ColorItems.project_gray,
             ),
           ],
         ),
