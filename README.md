@@ -1,5 +1,7 @@
 # EduMix Ai  
 
+![songif](https://github.com/user-attachments/assets/17787fd5-56a6-46ad-9568-0bf8beb8eb62)
+
 ![1](https://github.com/user-attachments/assets/d6fab6f2-6907-4d87-8ec6-d655048e2f1e)
 
 ![2](https://github.com/user-attachments/assets/e74a2010-e489-4018-8539-abaf666404d9)
