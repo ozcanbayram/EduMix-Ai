@@ -1,6 +1,9 @@
 # EduMix Ai  
-# BU REPO HENÜZ TAMAMLANMADI. 3 KASIMA KADAR TAMAMLANACAK (HACKATONA KATILMAK İÇİN.)
-# Temiz ve özenerek yazdığım bu repoyu daha detaylı bir Readme ile yayınlayacağım. Önerileriniz için issue-pr açarak bana yardımcı olabilirsiniz. :)
+
+![1](https://github.com/user-attachments/assets/d6fab6f2-6907-4d87-8ec6-d655048e2f1e)
+
+![2](https://github.com/user-attachments/assets/e74a2010-e489-4018-8539-abaf666404d9)
+
 
 A new Flutter project.
 
@@ -16,3 +19,4 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
