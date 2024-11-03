@@ -4,27 +4,10 @@
 
 # 🚧 EduMix Hakkında 🚧
 
-<table>
 
- <tr>
-
- <td>
-  
-## Tanıtım Videosunu İzkemek ve Deneyimlemek İçin:  
- </td>
-
- <td>
 <a href="https://youtu.be/DQAjh6UxBuM" > <img src="https://img.shields.io/badge/Video%20%20izle-FF0606"/> </a> 
- </td>
-
- <td>
 <a href="https://drive.google.com/file/d/1wLmehKuijtLB16t6KugNrp9JXUMTSh2d/view?usp=sharing" > <img src="https://img.shields.io/badge/APK%20%20indir-067800"/> </a>
- 
- </td>
-  
- </tr>
- 
-</table>
+
 
 
 EduMix uygulaması, yapay zeka destekli kişisel eğitim konseptine sahip bir mobil uygulamadır. <br>
