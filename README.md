@@ -7,6 +7,8 @@
 
 APK olarak : <a href="https://drive.google.com/file/d/1wLmehKuijtLB16t6KugNrp9JXUMTSh2d/view?usp=sharing"> İndir </a>
 
+![Group 17](https://github.com/user-attachments/assets/6b3b80c3-51d4-41b2-9a01-ea2e14b60859)
+
 A new Flutter project.
 
 ## Getting Started
