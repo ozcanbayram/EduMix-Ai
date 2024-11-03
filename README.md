@@ -5,6 +5,8 @@
 ![2](https://github.com/user-attachments/assets/e74a2010-e489-4018-8539-abaf666404d9)
 
 
+APK olarak : <a href="https://drive.google.com/file/d/1wLmehKuijtLB16t6KugNrp9JXUMTSh2d/view?usp=sharing"> İndir </a>
+
 A new Flutter project.
 
 ## Getting Started
