@@ -90,6 +90,10 @@
     - google_generative_ai: ^0.4.6
 
 
+### 🔻 API anahtarlarının güvenliği için .env dosyalama yöntemi ve flutter_dotenv paketi kullanılmıştır, Flutter'da yeniyseniz ve hata alırsanız ya da dilerseniz kendi API anahtarlarınızı kullanabilirsiniz.
+
+
+
 # Kullanılan Diller ve Araçlar 
 ![Langs](https://skillicons.dev/icons?i=flutter,dart,firebase,vscode,git,github,figma,ps,gmail") 
 
