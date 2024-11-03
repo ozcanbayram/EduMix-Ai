@@ -2,27 +2,66 @@
 
 ![songif](https://github.com/user-attachments/assets/17787fd5-56a6-46ad-9568-0bf8beb8eb62)
 
+
+<details> 
+ <summary> <h1> Görseller </h1></summary>
+
 ![1](https://github.com/user-attachments/assets/d6fab6f2-6907-4d87-8ec6-d655048e2f1e)
 
 ![2](https://github.com/user-attachments/assets/e74a2010-e489-4018-8539-abaf666404d9)
 
+</details>
+
+
 
 APK olarak : <a href="https://drive.google.com/file/d/1wLmehKuijtLB16t6KugNrp9JXUMTSh2d/view?usp=sharing"> İndir </a>
 
-![Group 17](https://github.com/user-attachments/assets/6b3b80c3-51d4-41b2-9a01-ea2e14b60859)
 
-A new Flutter project.
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
 
-## Getting Started
+<details> 
+ <summary> <h1>👉 Teknik Bilgiler </h1></summary>
+  
+<hr>
 
-This project is a starting point for a Flutter application.
+# Veri tabanı Yapısı 
+- Categories (Collection) <br>
+  - categorieId (Document) <br>
+    - name (field) <br>
+  <br>
+- users (Collection) <br>
+  - userId (Document) <br>
+    - displayName (Field) <br>
+    - email (Field )<br>
+    - uid (Field) <br>
 
-A few resources to get you started if this is your first Flutter project:
+# Kullanılan Paketler
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- CORE
+    - kartal: ^4.1.0 
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Firebase packages:
+    - firebase_core: ^3.6.0
+    - firebase_auth: ^5.3.1
+    - cloud_firestore: ^5.4.4
 
+- API Secure
+    - flutter_dotenv: ^5.2.1
+
+- UI
+    - lottie: ^3.1.3
+    - google_nav_bar: ^5.0.7
+
+- Gemini Ai
+    - google_generative_ai: ^0.4.6
+
+
+# Kullanılan Diller ve Araçlar 
+![Langs](https://skillicons.dev/icons?i=flutter,dart,firebase,vscode,git,github,figma,ps,gmail,") 
+
+</details>
