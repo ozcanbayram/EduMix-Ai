@@ -9,7 +9,11 @@
 ![songif](https://github.com/user-attachments/assets/17787fd5-56a6-46ad-9568-0bf8beb8eb62)
 
 - EduMix uygulaması, yapay zeka destekli kişisel eğitim konseptine sahip bir mobil uygulamadır. <br>
-  Kullanıcıların istedikleri konularda kişisel eğitmelerine destek olur. <br>  
+  Kullanıcıların istedikleri konularda kişisel eğitmelerine destek olur. <br>
+
+- Eğitimi Genel olarak ele alan Edumix uygulaması neredeyse herkese hitap edecek eğitici içeriklere sahiptir.
+
+- Bu uygulama; kullanıcıların faydalı ve haberdar olmadıkları bilgiye ulaşmasını sağlayarak yeni bilgiler edinmelerine ve kişisel gelişimlerine katkı sağlayacaktır. 
 
 - EduMix ile istediğiniz kategoride, yapay zeka tarafından anlık olarak oluşturulan birbirinden farklı ve ilgi çekici bilgileri okuyabilirsiniz. <br> 
   Bir çok kategoride okumalar yaparak kendinizi her zaman her yerde eğitebilirsiniz. <br>  
