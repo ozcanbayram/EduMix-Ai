@@ -2,6 +2,7 @@ import 'package:edumix/core/constants/project_text.dart';
 import 'package:edumix/core/enums/image_enum.dart';
 import 'package:flutter/material.dart';
 
+@immutable
 class WelcomeModel {
   WelcomeModel({
     required this.description,
@@ -12,6 +13,7 @@ class WelcomeModel {
   final Image image;
 }
 
+@immutable
 class WelcomeElements {
   static final List<WelcomeModel> welcomeItems = [
     WelcomeModel(

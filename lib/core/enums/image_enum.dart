@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //! imageler burada tanımlanır ve buradaki metod aracılığıyla kullanılir.
 
 // ignore: constant_identifier_names
+@immutable
 enum ImageEnums {
   learning_first,
   learning_second,
